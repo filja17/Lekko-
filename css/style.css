@@ -3197,3 +3197,230 @@ body.collections-page .navbar.scrolled .nav-hamburger span { background-color: v
     color: rgba(255, 255, 255, 1);
     border-bottom-color: rgba(255, 255, 255, 0.9);
 }
+
+/* ============================================
+   MOBILE FIXES — tylko dla smartfonów
+   Desktop (>900px) NIE jest dotykany
+   ============================================ */
+@media (max-width: 900px) {
+
+    /* 1. NAVBAR — zawsze transparentny na stronach z hero/fullbleed zdjęciem
+          Biały bar wynikał z tego że fixed navbar dostawał tło przed scrollem */
+
+    /* Index i process — navbar nad zdjęciem, bez białego tła na starcie */
+    body:not(.no-hero):not(.collections-page) .navbar {
+        background-color: transparent;
+        border-bottom: none;
+    }
+
+    /* Collections — też bez białego tła */
+    body.collections-page .navbar {
+        background-color: transparent !important;
+        border-bottom: none !important;
+    }
+
+    /* Po scrollu — jasne tło (obsługiwane przez JS .scrolled) */
+    .navbar.scrolled {
+        background-color: rgba(250, 248, 245, 0.97) !important;
+        border-bottom: 1px solid rgba(212, 196, 176, 0.2) !important;
+    }
+
+    /* 2. HAMBURGER — zawsze ciemny gdy navbar jest nad jasnym tłem po scrollu
+          Problem: biały hamburger na białym tle gdy menu otwarte */
+    .nav-hamburger span {
+        background-color: rgba(255, 255, 255, 0.9);
+        transition: background-color 0.3s ease;
+    }
+
+    .navbar.scrolled .nav-hamburger span {
+        background-color: var(--umbra) !important;
+    }
+
+    /* 3. MENU MOBILNE — ciemne litery na jasnym tle gdy otwarte */
+    .nav-links.open {
+        background-color: rgba(250, 248, 245, 0.98) !important;
+        backdrop-filter: blur(12px);
+    }
+
+    .nav-links.open a {
+        color: var(--text) !important;
+    }
+
+    .nav-links.open a.active {
+        color: var(--umbra) !important;
+    }
+
+    /* 4. POEM PAIRS — na mobile: zdjęcie pełna szerokość, tekst pod nim
+          Nie 2 kolumny obok siebie */
+    .poem-pair {
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: auto !important;
+    }
+
+    /* Zawsze: zdjęcie pierwsze, tekst pod nim */
+    .poem-pair .poem-image {
+        order: 1;
+        width: 100%;
+        min-height: 65vw;
+        max-height: 85vw;
+    }
+
+    .poem-pair .poem-line {
+        order: 2;
+        width: 100%;
+        min-height: auto;
+        padding: 2.5rem 2rem;
+    }
+
+    /* Oba warianty (left i right) mają ten sam układ na mobile */
+    .poem-pair-left .poem-image,
+    .poem-pair-right .poem-image {
+        order: 1;
+    }
+
+    .poem-pair-left .poem-line,
+    .poem-pair-right .poem-line {
+        order: 2;
+    }
+
+    .poem-line p {
+        font-size: 1.1rem;
+        max-width: 100%;
+    }
+
+    /* 5. PROCESS — tekst pod zdjęciem, nie wycentrowany */
+    .process-step-full {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* Zdjęcie zawsze pierwsze */
+    .process-step-full .process-image-full {
+        order: 1;
+        width: 100%;
+        height: 65vw;
+        max-height: 380px;
+        object-fit: cover;
+    }
+
+    .process-step-full .process-text-full {
+        order: 2;
+        padding: 2.5rem 1.5rem;
+        text-align: left;
+    }
+
+    .process-text-full h3 {
+        font-size: 1.6rem;
+    }
+
+    .process-text-full p {
+        font-size: 1rem;
+    }
+
+    /* 6. COLLECTIONS — filtry widoczne na zdjęciu */
+    .collections-filter-bar .filter-btn {
+        color: rgba(255, 255, 255, 0.9) !important;
+        font-size: 1rem;
+        margin: 0 0.6rem;
+    }
+
+    .collections-filter-bar .filter-btn.active {
+        color: rgba(255, 255, 255, 1) !important;
+        border-bottom-color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+    /* 7. PROCESS HERO — fullbleed też na mobile */
+    .process-hero-fullbleed {
+        height: 60vw;
+        min-height: 250px;
+        position: relative !important; /* fixed bywa kapryśne na iOS */
+    }
+
+    .process-hero-fullbleed img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* 8. COLLECTIONS BG — fixed nie działa dobrze na iOS Safari */
+    .collections-bg-img {
+        position: absolute !important;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .collections-bg-wrap::before {
+        position: absolute !important;
+        height: 100% !important;
+    }
+
+    .collections-bg-wrap {
+        min-height: 100vh;
+    }
+
+    /* 9. ABOUT SPLIT — portret na pełną szerokość, tekst pod nim */
+    .about-split {
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: auto !important;
+    }
+
+    .about-split-image {
+        width: 100%;
+        height: 75vw;
+        max-height: 480px;
+    }
+
+    .about-split-image img {
+        min-height: 0 !important;
+        height: 100%;
+    }
+
+    .about-split-text {
+        padding: 3rem 1.5rem 2.5rem !important;
+    }
+}
+
+@media (max-width: 600px) {
+
+    /* Logo widoczne — ciemne gdy scrolled */
+    .navbar.scrolled .logo {
+        color: var(--text) !important;
+    }
+
+    /* Poem — jeszcze mniejszy tekst */
+    .poem-line p {
+        font-size: 1rem;
+        padding: 0;
+    }
+
+    /* Process — mniejszy padding */
+    .process-text-full {
+        padding: 2rem 1.2rem !important;
+    }
+
+    /* Grid kolekcji — 2 kolumny na małym ekranie */
+    .scarves-grid-full,
+    #scarvesGrid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 2px !important;
+        padding: 0.5rem !important;
+    }
+
+    /* Filtry — mniejsze na małym telefonie */
+    .collections-filter-bar .filter-btn {
+        font-size: 0.85rem;
+        margin: 0 0.4rem;
+    }
+
+    .collections-filter-bar {
+        padding-top: 5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
