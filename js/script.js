@@ -1173,9 +1173,17 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('scroll', onScrollCollections, { passive: true });
         onScrollCollections();
     } else if (navbar) {
-        // Strona bez hero — navbar zawsze jasny
-        document.body.classList.add('no-hero');
-        navbar.classList.add('scrolled');
+        // Sprawdź czy strona ma własne zdjęcie tła (collections)
+        // lub jest stroną bez żadnego hero
+        const isHeroPage = document.body.classList.contains('hero-page') ||
+                           document.body.classList.contains('collections-page');
+        if (!isHeroPage) {
+            // Strony bez zdjęcia tła (about, contact, checkout etc)
+            // navbar jasny od razu
+            document.body.classList.add('no-hero');
+            navbar.classList.add('scrolled');
+        }
+        // hero-page i collections-page są obsługiwane przez CSS :not(.scrolled)
     }
 
     // Newsletter na collections — jeśli użytkownik nie otworzył modala przez 30s
