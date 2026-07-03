@@ -3424,3 +3424,81 @@ body.collections-page .navbar.scrolled .nav-hamburger span { background-color: v
         padding-right: 1rem;
     }
 }
+
+/* ============================================
+   HERO PAGES — navbar ZAWSZE transparentny
+   na starcie (przed scrollem), na każdym urządzeniu
+   Nadpisuje WSZYSTKIE poprzednie reguły
+   ============================================ */
+body.hero-page .navbar:not(.scrolled),
+body.collections-page .navbar:not(.scrolled) {
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
+}
+
+body.hero-page .navbar:not(.scrolled) .logo,
+body.collections-page .navbar:not(.scrolled) .logo {
+    color: rgba(255, 255, 255, 0.92) !important;
+}
+
+body.hero-page .navbar:not(.scrolled) .nav-links a,
+body.collections-page .navbar:not(.scrolled) .nav-links a {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+body.hero-page .navbar:not(.scrolled) .nav-hamburger span,
+body.collections-page .navbar:not(.scrolled) .nav-hamburger span {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Menu otwarte — zawsze ciemne litery na jasnym tle */
+body.hero-page .nav-links.open,
+body.collections-page .nav-links.open {
+    background-color: rgba(250, 248, 245, 0.98) !important;
+}
+
+body.hero-page .nav-links.open a,
+body.collections-page .nav-links.open a {
+    color: var(--text) !important;
+}
+
+/* ============================================
+   PROCESS MOBILE — tekst wyrównany do lewej,
+   NIE centrowany
+   ============================================ */
+@media (max-width: 900px) {
+    .process-text-full {
+        text-align: left !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+    }
+
+    .process-text-full h3 {
+        text-align: left !important;
+    }
+
+    .process-text-full p {
+        text-align: left !important;
+    }
+
+    /* Process hero fullbleed — wymuś position relative na iOS */
+    .process-hero-fullbleed {
+        position: relative !important;
+        width: 100% !important;
+        height: 60vh !important;
+        min-height: 250px !important;
+        overflow: hidden !important;
+    }
+
+    .process-hero-fullbleed img {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+}
