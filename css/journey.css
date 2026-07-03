@@ -1,0 +1,280 @@
+/* ── journey ── */
+
+#journey {
+  position: relative;
+  height: var(--journey-h, 30000px);
+}
+
+#frame {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── backgrounds ── */
+#bg-stack {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  transform: scale(1.04);
+  will-change: opacity;
+  filter: brightness(0.72) saturate(0.85);
+}
+.bg-layer.visible { opacity: 1; }
+
+/* solid colour strip behind text — left 55% */
+#text-shield {
+  position: absolute;
+  inset: 0 45% 0 0;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    rgba(8,8,8,0.97) 0%,
+    rgba(8,8,8,0.90) 70%,
+    rgba(8,8,8,0.0)  100%
+  );
+  pointer-events: none;
+}
+
+/* veil over the whole frame for atmosphere */
+#bg-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    transparent 50%,
+    rgba(8,8,8,0.18) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── cover — fixed right side, large ── */
+#cover-wrap {
+  position: absolute;
+  z-index: 3;
+  right: 4vw;
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(437px, 62vh, 782px);
+  aspect-ratio: 1;
+  cursor: pointer;
+  transition: opacity 0.6s ease;
+}
+#cover-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.9s ease, transform 1s var(--ease);
+  box-shadow: 0 48px 120px rgba(0,0,0,0.75), 0 12px 36px rgba(0,0,0,0.5);
+}
+#cover-wrap:hover #cover-img { transform: scale(1.012); }
+#cover-placeholder {
+  position: absolute; inset: 0; display: none;
+}
+#cover-placeholder svg { width: 100%; height: 100%; }
+
+/* ── text — left half, bottom-anchored ── */
+#text-panel {
+  position: absolute;
+  z-index: 3;
+  left: 5vw;
+  right: 50%;          /* stays in left half */
+  bottom: auto;
+  top: 18vh;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+#album-meta {
+  display: flex;
+  gap: 1.4rem;
+  align-items: baseline;
+  margin-bottom: 1.6rem;
+}
+#album-number {
+  font-size: 0.6rem;
+  font-weight: var(--wm);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(240,237,232,0.2);
+}
+#album-year {
+  font-size: 0.6rem;
+  font-weight: var(--wl);
+  letter-spacing: 0.14em;
+  color: rgba(240,237,232,0.16);
+}
+
+/* morph area */
+#text-morph {
+  position: relative;
+  min-height: 55vh;
+}
+.morph-layer {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  opacity: 0;
+  transition: opacity 0.7s ease, transform 0.7s var(--ease);
+  transform: translateY(14px);
+  pointer-events: none;
+}
+.morph-layer.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* title — large, no style, fills left column */
+#morph-title {
+  font-size: clamp(4.5rem, 9vw, 10rem);
+  font-weight: var(--wl);
+  letter-spacing: 0.06em;
+  line-height: 0.88;
+  color: var(--white);
+}
+#morph-title span { display: block; }
+
+/* tracklist */
+#morph-tracks { display: flex; flex-direction: column; padding-top: 0.4rem; }
+.track-row {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid rgba(240,237,232,0.06);
+  cursor: pointer;
+}
+.track-row:first-child { border-top: 1px solid rgba(240,237,232,0.06); }
+.track-num { font-size: 0.58rem; font-weight: var(--wl); color: rgba(240,237,232,0.18); }
+.track-name {
+  font-size: 0.82rem; font-weight: var(--wn);
+  color: rgba(240,237,232,0.58);
+  transition: color var(--fast);
+}
+.track-row:hover .track-name { color: var(--white); }
+.track-duration { font-size: 0.58rem; font-weight: var(--wl); color: rgba(240,237,232,0.16); }
+.track-buy {
+  font-size: 0.55rem; font-weight: var(--wm); letter-spacing: 0.1em;
+  text-transform: uppercase; color: rgba(240,237,232,0.18);
+  transition: color var(--fast);
+}
+.track-row:hover .track-buy { color: rgba(240,237,232,0.55); }
+
+/* quote — unused on index */
+#morph-quote { display: none; }
+
+/* desc shown above tracklist */
+.album-desc-index {
+  font-size: clamp(0.82rem, 1.2vw, 0.96rem);
+  font-weight: var(--wl);
+  line-height: 1.72;
+  color: rgba(240,237,232,0.38);
+  max-width: 440px;
+  margin-bottom: 2rem;
+}
+.tracks-list { cursor: pointer; }
+
+/* tags hidden on index */
+#album-tags { display: none; }
+#album-cta  { display: none; }
+
+/* scroll hint */
+#scroll-hint {
+  position: absolute;
+  bottom: 2.8rem; right: 3rem;
+  z-index: 10;
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  color: rgba(240,237,232,0.16);
+  font-size: 0.52rem; font-weight: var(--wm);
+  letter-spacing: 0.24em; text-transform: uppercase;
+  transition: opacity 0.6s ease;
+}
+#scroll-hint.hidden { opacity: 0; pointer-events: none; }
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(to bottom, rgba(240,237,232,0.2), transparent);
+  animation: scrollDrop 2s ease-in-out infinite;
+}
+@keyframes scrollDrop {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  45%  { transform: scaleY(1); transform-origin: top; }
+  55%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* progress dots */
+#progress-dots {
+  position: absolute; left: 1.6rem; top: 50%; transform: translateY(-50%);
+  z-index: 10; display: flex; flex-direction: column; gap: 9px;
+}
+.pdot {
+  width: 3px; height: 3px; border-radius: 50%;
+  background: rgba(240,237,232,0.16); cursor: pointer;
+  transition: background var(--fast), height var(--fast);
+}
+.pdot.active { background: rgba(240,237,232,0.7); height: 16px; border-radius: 2px; }
+.pdot:hover  { background: rgba(240,237,232,0.4); }
+
+/* responsive */
+@media (max-width: 900px) {
+  /* cover — large, top right, fixed */
+  #cover-wrap {
+    right: 1.2rem;
+    top: 12vh;
+    transform: none;
+    width: clamp(140px, 38vw, 260px);
+  }
+
+  /* text — bottom of screen, full width */
+  #text-panel {
+    left: 1.2rem;
+    right: 1.2rem;
+    top: auto;
+    bottom: 5vh;
+  }
+
+  /* shield covers whole screen so text is always readable */
+  #text-shield {
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(8,8,8,0.95) 0%,
+      rgba(8,8,8,0.6)  50%,
+      rgba(8,8,8,0.0)  100%
+    );
+  }
+
+  #morph-title {
+    font-size: clamp(2.8rem, 11vw, 4.5rem);
+    letter-spacing: 0.03em;
+  }
+
+  /* morph area shorter on mobile */
+  #text-morph { min-height: 35vh; }
+
+  #album-meta { margin-bottom: 0.8rem; }
+
+  #progress-dots { display: none; }
+  #scroll-hint { display: none; }
+}
+
+/* ── albums divider section (before journey) ── */
+#albums-section {
+  /* full viewport height, sits between intro and journey */
+  position: relative;
+  z-index: 1;
+}
