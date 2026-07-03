@@ -3470,21 +3470,57 @@ body.collections-page .nav-links.open a {
    NIE centrowany
    ============================================ */
 @media (max-width: 900px) {
-    .process-text-full {
-        text-align: left !important;
-        align-items: flex-start !important;
-        justify-content: flex-start !important;
+    /* Process — flex column, zdjęcie i tekst naprzemiennie */
+    .process-step-full {
+        display: flex !important;
+        flex-direction: column !important;
+        border-top: 1px solid rgba(212,196,176,0.15) !important;
     }
 
-    .process-text-full h3 {
+    /* Kroki nieparzyste: zdjęcie górą, tekst dołem — tekst do lewej */
+    .process-step-full:nth-child(odd) .process-image-full {
+        order: 1 !important;
+    }
+    .process-step-full:nth-child(odd) .process-text-full {
+        order: 2 !important;
         text-align: left !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
     }
 
+    /* Kroki parzyste: tekst górą (do prawej), zdjęcie dołem */
+    .process-step-full:nth-child(even) .process-image-full {
+        order: 2 !important;
+    }
+    .process-step-full:nth-child(even) .process-text-full {
+        order: 1 !important;
+        text-align: right !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
+    }
+
+    .process-text-full h3,
     .process-text-full p {
-        text-align: left !important;
+        /* Dziedziczą text-align z rodzica */
     }
 
-    /* Process hero fullbleed — wymuś position relative na iOS */
+    .process-image-full {
+        width: 100% !important;
+        height: 60vw !important;
+        max-height: 360px !important;
+        object-fit: cover !important;
+    }
+
+    .process-text-full {
+        padding: 2.5rem 2rem !important;
+        background-color: var(--white) !important;
+    }
+
+    .process-step-full:nth-child(even) .process-text-full {
+        background-color: #F5F1EC !important;
+    }
+
+    /* Process hero fullbleed */
     .process-hero-fullbleed {
         position: relative !important;
         width: 100% !important;
@@ -3495,10 +3531,8 @@ body.collections-page .nav-links.open a {
 
     .process-hero-fullbleed img {
         position: absolute !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
+        top: 0 !important; left: 0 !important;
+        width: 100% !important; height: 100% !important;
         object-fit: cover !important;
     }
 }
