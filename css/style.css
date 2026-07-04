@@ -153,7 +153,6 @@ body {
     justify-content: center;
     overflow: hidden;
     margin-top: 0;
-    /* Navbar jest fixed więc hero zaczyna od góry strony */
 }
 
 .hero-background {
@@ -3534,5 +3533,85 @@ body.collections-page .nav-links.open a {
         top: 0 !important; left: 0 !important;
         width: 100% !important; height: 100% !important;
         object-fit: cover !important;
+    }
+}
+
+/* ============================================
+   ELIMINACJA BIAŁEGO PASKA — hero pages
+   html i body muszą być przezroczyste/bez offsetu
+   żeby zdjęcie pokrywało ekran od piksel 0
+   ============================================ */
+body.hero-page,
+body.collections-page {
+    background-color: #000;  /* czarne tło jako fallback, nie białe */
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Navbar na hero-page — position sticky ale BEZ tła,
+   section hero idzie tuż pod nim bez żadnego offsetu */
+body.hero-page .navbar,
+body.collections-page .navbar {
+    position: sticky !important;
+    top: 0;
+    /* Sticky navbar nie tworzy białego paska bo jest w normalnym flow */
+    /* Gdy scrolled — dostaje tło przez JS */
+    background-color: transparent !important;
+    margin-bottom: -70px;  /* "wciąga" navbar do hero section */
+    z-index: 100;
+}
+
+/* Odwróć z-index — hero section nad navbar żeby zdjęcie było za nim */
+body.hero-page .hero-landing,
+body.hero-page .process-hero-fullbleed {
+    position: relative;
+    z-index: 50;
+    margin-top: -1px;  /* usuń ewentualny 1px gap */
+}
+
+body.collections-page .collections-bg-wrap {
+    position: relative;
+    z-index: 50;
+    margin-top: -1px;
+}
+
+/* Po scrollu - navbar wraca na wierzch */
+body.hero-page .navbar.scrolled,
+body.collections-page .navbar.scrolled {
+    position: fixed !important;
+    z-index: 1000 !important;
+    background-color: rgba(250, 248, 245, 0.95) !important;
+    backdrop-filter: blur(12px) !important;
+    margin-bottom: 0 !important;
+}
+
+/* Menu mobilne — zawsze czytelne niezależnie od stanu navbar */
+@media (max-width: 900px) {
+    /* Gdy menu otwarte — jasne tło, ciemne litery */
+    .nav-links.open {
+        background-color: rgba(250, 248, 245, 0.99) !important;
+        backdrop-filter: blur(16px) !important;
+    }
+
+    .nav-links.open li a {
+        color: var(--text) !important;
+        opacity: 1 !important;
+    }
+
+    /* Hamburger — ciemny gdy scrolled lub menu otwarte */
+    .navbar.scrolled .nav-hamburger span,
+    .navbar:has(.nav-links.open) .nav-hamburger span {
+        background-color: var(--umbra) !important;
+    }
+
+    /* Logo — ciemne gdy scrolled */
+    .navbar.scrolled .logo {
+        color: var(--text) !important;
+    }
+
+    /* Gdy menu jest otwarte — logo też ciemne */
+    .nav-links.open ~ * .logo,
+    .navbar:has(.nav-links.open) .logo {
+        color: var(--text) !important;
     }
 }
