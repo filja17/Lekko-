@@ -1412,7 +1412,7 @@ body.page-leaving { opacity: 0; transition: opacity 0.3s ease; }
 .footer-brand { display: flex; flex-direction: column; gap: 0.4rem; }
 .footer-logo { font-size: 1rem; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; color: var(--text);     font-family: 'Cormorant', Georgia, serif;
 }
-.footer-tagline { font-size: 0.75rem; color: var(--text-light); letter-spacing: 2px;  }
+.footer-tagline { display: none; }
 .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; }
 .footer-links a {
     font-size: 0.72rem; color: var(--text-light); text-decoration: none;
@@ -3543,7 +3543,7 @@ body.collections-page .nav-links.open a {
    ============================================ */
 body.hero-page,
 body.collections-page {
-    background-color: #000;  /* czarne tło jako fallback, nie białe */
+    background-color: var(--beige-light);
     padding: 0 !important;
     margin: 0 !important;
 }
