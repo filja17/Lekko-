@@ -1181,8 +1181,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const heroBottom = hero.getBoundingClientRect().bottom;
             if (heroBottom <= 0) {
                 navbar.classList.add('scrolled');
+                // Usuń inline style żeby CSS .scrolled mógł działać
+                navbar.style.removeProperty('background-color');
+                navbar.style.removeProperty('border-bottom');
             } else {
                 navbar.classList.remove('scrolled');
+                // Przywróć transparent inline
+                navbar.style.setProperty('background-color', 'transparent', 'important');
+                navbar.style.setProperty('border-bottom', 'none', 'important');
             }
         };
         window.addEventListener('scroll', onScroll, { passive: true });
@@ -1191,8 +1197,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const onScrollCollections = () => {
             if (window.scrollY > window.innerHeight * 0.5) {
                 navbar.classList.add('scrolled');
+                navbar.style.removeProperty('background-color');
+                navbar.style.removeProperty('border-bottom');
             } else {
                 navbar.classList.remove('scrolled');
+                navbar.style.setProperty('background-color', 'transparent', 'important');
+                navbar.style.setProperty('border-bottom', 'none', 'important');
             }
         };
         window.addEventListener('scroll', onScrollCollections, { passive: true });
