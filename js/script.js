@@ -986,16 +986,43 @@ document.addEventListener('DOMContentLoaded', function() {
     // Hamburger menu
     const hamburger = document.querySelector('.nav-hamburger');
     const navLinks = document.querySelector('.nav-links');
+    const navbar2 = document.querySelector('.navbar');
+
     if (hamburger && navLinks) {
         hamburger.addEventListener('click', function() {
             this.classList.toggle('open');
             navLinks.classList.toggle('open');
+
+            // Gdy menu otwarte — navbar i hamburger ciemne niezależnie od tła
+            const isOpen = navLinks.classList.contains('open');
+            if (isOpen) {
+                if (navbar2) navbar2.classList.add('menu-open');
+                hamburger.querySelectorAll('span').forEach(s => {
+                    s.style.backgroundColor = 'var(--umbra)';
+                });
+                const logo = document.querySelector('.logo');
+                if (logo) logo.style.color = 'var(--text)';
+            } else {
+                if (navbar2) navbar2.classList.remove('menu-open');
+                // Przywróć oryginalne kolory zależnie od pozycji scroll
+                hamburger.querySelectorAll('span').forEach(s => {
+                    s.style.backgroundColor = '';
+                });
+                const logo = document.querySelector('.logo');
+                if (logo) logo.style.color = '';
+            }
         });
-        // Zamknij po kliknięciu linka
+
         navLinks.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 hamburger.classList.remove('open');
                 navLinks.classList.remove('open');
+                if (navbar2) navbar2.classList.remove('menu-open');
+                hamburger.querySelectorAll('span').forEach(s => {
+                    s.style.backgroundColor = '';
+                });
+                const logo = document.querySelector('.logo');
+                if (logo) logo.style.color = '';
             });
         });
     }
@@ -1150,10 +1177,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const collectionsFilterBar = document.querySelector('.collections-filter-bar');
 
     if (navbar && hero) {
-        // Strona z hero — navbar zaczyna transparentny
         const onScroll = () => {
             const heroBottom = hero.getBoundingClientRect().bottom;
-            if (heroBottom <= 80) {
+            if (heroBottom <= 0) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
@@ -1162,9 +1188,8 @@ document.addEventListener('DOMContentLoaded', function() {
         window.addEventListener('scroll', onScroll, { passive: true });
         onScroll();
     } else if (navbar && collectionsFilterBar) {
-        // Collections — navbar transparentny dopóki widać zdjęcie tła (pierwsze ~400px)
         const onScrollCollections = () => {
-            if (window.scrollY > 120) {
+            if (window.scrollY > window.innerHeight * 0.5) {
                 navbar.classList.add('scrolled');
             } else {
                 navbar.classList.remove('scrolled');
