@@ -357,6 +357,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 0;
+    width: 100%;
 }
 
 .process-step-full {
@@ -365,13 +366,13 @@ body {
     align-items: stretch;
     overflow: hidden;
     border: none;
-    border-top: 1px solid rgba(212, 196, 176, 0.15);
+    /* Identyczny układ jak poem-pair na index — bez ramek, bez boxów */
 }
 
 .process-image-full {
     width: 100%;
     height: 100%;
-    max-height: 65vh;
+    min-height: 70vh;
     object-fit: cover;
     object-position: center;
     display: block;
@@ -383,11 +384,15 @@ body {
 }
 
 .process-text-full {
-    padding: 4rem 4.5rem;
+    padding: 4rem 5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    background-color: var(--white);
+    background: linear-gradient(135deg, #FBF9F6 0%, #F3EEE7 100%);
+}
+
+.process-step-full:nth-child(even) .process-text-full {
+    background: linear-gradient(135deg, #F3EEE7 0%, #FBF9F6 100%);
 }
 
 .process-step-full:nth-child(even) .process-text-full {
@@ -3469,54 +3474,32 @@ body.collections-page .nav-links.open a {
    NIE centrowany
    ============================================ */
 @media (max-width: 900px) {
-    /* Process — flex column, zdjęcie i tekst naprzemiennie */
+    /* Process mobile — identyczny jak poem-pair */
     .process-step-full {
         display: flex !important;
         flex-direction: column !important;
-        border-top: 1px solid rgba(212,196,176,0.15) !important;
+        border: none !important;
     }
 
-    /* Kroki nieparzyste: zdjęcie górą, tekst dołem — tekst do lewej */
-    .process-step-full:nth-child(odd) .process-image-full {
+    /* Zawsze: zdjęcie pierwsze, tekst pod */
+    .process-step-full .process-image-full {
         order: 1 !important;
-    }
-    .process-step-full:nth-child(odd) .process-text-full {
-        order: 2 !important;
-        text-align: left !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
-    }
-
-    /* Kroki parzyste: tekst górą (do prawej), zdjęcie dołem */
-    .process-step-full:nth-child(even) .process-image-full {
-        order: 2 !important;
-    }
-    .process-step-full:nth-child(even) .process-text-full {
-        order: 1 !important;
-        text-align: right !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
-    }
-
-    .process-text-full h3,
-    .process-text-full p {
-        /* Dziedziczą text-align z rodzica */
-    }
-
-    .process-image-full {
         width: 100% !important;
-        height: 60vw !important;
-        max-height: 360px !important;
+        height: 65vw !important;
+        max-height: 380px !important;
+        min-height: 0 !important;
         object-fit: cover !important;
     }
 
-    .process-text-full {
+    .process-step-full .process-text-full {
+        order: 2 !important;
         padding: 2.5rem 2rem !important;
-        background-color: var(--white) !important;
+        text-align: left !important;
     }
 
+    /* Parzyste — tekst do prawej */
     .process-step-full:nth-child(even) .process-text-full {
-        background-color: #F5F1EC !important;
+        text-align: right !important;
     }
 
     /* Process hero fullbleed */
@@ -3587,31 +3570,31 @@ body.collections-page .navbar.scrolled {
 
 /* Menu mobilne — zawsze czytelne niezależnie od stanu navbar */
 @media (max-width: 900px) {
-    /* Gdy menu otwarte — jasne tło, ciemne litery */
+    /* Menu otwarte — zawsze jasne tło i ciemne litery */
     .nav-links.open {
         background-color: rgba(250, 248, 245, 0.99) !important;
         backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
     }
 
-    .nav-links.open li a {
+    .nav-links.open a {
         color: var(--text) !important;
         opacity: 1 !important;
     }
 
-    /* Hamburger — ciemny gdy scrolled lub menu otwarte */
-    .navbar.scrolled .nav-hamburger span,
-    .navbar:has(.nav-links.open) .nav-hamburger span {
+    .navbar.menu-open .logo {
+        color: var(--text) !important;
+    }
+
+    .navbar.menu-open .nav-hamburger span {
         background-color: var(--umbra) !important;
     }
 
-    /* Logo — ciemne gdy scrolled */
     .navbar.scrolled .logo {
         color: var(--text) !important;
     }
 
-    /* Gdy menu jest otwarte — logo też ciemne */
-    .nav-links.open ~ * .logo,
-    .navbar:has(.nav-links.open) .logo {
-        color: var(--text) !important;
+    .navbar.scrolled .nav-hamburger span {
+        background-color: var(--umbra) !important;
     }
 }
