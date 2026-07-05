@@ -997,19 +997,19 @@ document.addEventListener('DOMContentLoaded', function() {
             const isOpen = navLinks.classList.contains('open');
             if (isOpen) {
                 if (navbar2) navbar2.classList.add('menu-open');
+                // Wymuś ciemne kolory inline — najwyższy priorytet
                 hamburger.querySelectorAll('span').forEach(s => {
-                    s.style.backgroundColor = 'var(--umbra)';
+                    s.style.setProperty('background-color', '#5C4033', 'important');
                 });
                 const logo = document.querySelector('.logo');
-                if (logo) logo.style.color = 'var(--text)';
+                if (logo) logo.style.setProperty('color', '#2C2420', 'important');
             } else {
                 if (navbar2) navbar2.classList.remove('menu-open');
-                // Przywróć oryginalne kolory zależnie od pozycji scroll
                 hamburger.querySelectorAll('span').forEach(s => {
-                    s.style.backgroundColor = '';
+                    s.style.removeProperty('background-color');
                 });
                 const logo = document.querySelector('.logo');
-                if (logo) logo.style.color = '';
+                if (logo) logo.style.removeProperty('color');
             }
         });
 
@@ -1195,7 +1195,12 @@ document.addEventListener('DOMContentLoaded', function() {
         onScroll();
     } else if (navbar && collectionsFilterBar) {
         const onScrollCollections = () => {
-            if (window.scrollY > window.innerHeight * 0.5) {
+            // scrolled gdy zjechano poza pasek filtrów (~200px)
+            const filterBar = document.querySelector('.collections-filter-bar');
+            const threshold = filterBar
+                ? filterBar.getBoundingClientRect().bottom
+                : 200;
+            if (threshold <= 70) {
                 navbar.classList.add('scrolled');
                 navbar.style.removeProperty('background-color');
                 navbar.style.removeProperty('border-bottom');
