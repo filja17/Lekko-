@@ -3293,7 +3293,7 @@ body.collections-page .navbar.scrolled .nav-hamburger span { background-color: v
         max-width: 100%;
     }
 
-    /* 5. PROCESS — tekst pod zdjęciem, nie wycentrowany */
+    /* 5. PROCESS — tekst pod zdjęciem, tak jak poem-pair na index */
     .process-step-full {
         display: flex !important;
         flex-direction: column !important;
@@ -3311,7 +3311,7 @@ body.collections-page .navbar.scrolled .nav-hamburger span { background-color: v
     .process-step-full .process-text-full {
         order: 2;
         padding: 2.5rem 1.5rem;
-        text-align: left;
+        text-align: center;
     }
 
     .process-text-full h3 {
@@ -3443,18 +3443,18 @@ body.collections-page .navbar:not(.scrolled) {
     box-shadow: none !important;
 }
 
-body.hero-page .navbar:not(.scrolled) .logo,
-body.collections-page .navbar:not(.scrolled) .logo {
+body.hero-page .navbar:not(.scrolled):not(.menu-open) .logo,
+body.collections-page .navbar:not(.scrolled):not(.menu-open) .logo {
     color: rgba(255, 255, 255, 0.92) !important;
 }
 
-body.hero-page .navbar:not(.scrolled) .nav-links a,
-body.collections-page .navbar:not(.scrolled) .nav-links a {
+body.hero-page .navbar:not(.scrolled) .nav-links:not(.open) a,
+body.collections-page .navbar:not(.scrolled) .nav-links:not(.open) a {
     color: rgba(255, 255, 255, 0.85) !important;
 }
 
-body.hero-page .navbar:not(.scrolled) .nav-hamburger span,
-body.collections-page .navbar:not(.scrolled) .nav-hamburger span {
+body.hero-page .navbar:not(.scrolled):not(.menu-open) .nav-hamburger span,
+body.collections-page .navbar:not(.scrolled):not(.menu-open) .nav-hamburger span {
     background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
@@ -3494,12 +3494,8 @@ body.collections-page .nav-links.open a {
     .process-step-full .process-text-full {
         order: 2 !important;
         padding: 2.5rem 2rem !important;
-        text-align: left !important;
-    }
-
-    /* Parzyste — tekst do prawej */
-    .process-step-full:nth-child(even) .process-text-full {
-        text-align: right !important;
+        text-align: center !important;
+        align-items: center !important;
     }
 
     /* Process hero fullbleed */
