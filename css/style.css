@@ -3459,14 +3459,16 @@ body.collections-page .navbar:not(.scrolled):not(.menu-open) .nav-hamburger span
 }
 
 /* Menu otwarte — zawsze ciemne litery na jasnym tle */
-body.hero-page .nav-links.open,
-body.collections-page .nav-links.open {
+body.hero-page .navbar .nav-links.open,
+body.collections-page .navbar .nav-links.open {
     background-color: rgba(250, 248, 245, 0.98) !important;
+    backdrop-filter: blur(16px) !important;
 }
 
-body.hero-page .nav-links.open a,
-body.collections-page .nav-links.open a {
+body.hero-page .navbar .nav-links.open a,
+body.collections-page .navbar .nav-links.open a {
     color: var(--text) !important;
+    opacity: 1 !important;
 }
 
 /* ============================================
@@ -3592,5 +3594,39 @@ body.collections-page .navbar.scrolled {
 
     .navbar.scrolled .nav-hamburger span {
         background-color: var(--umbra) !important;
+    }
+}
+
+/* ============================================
+   POEM-LINE z podtytułem — dla process.html
+   ============================================ */
+.poem-line {
+    flex-direction: column;
+    gap: 1.2rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.poem-subtext {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-style: normal;
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--text-light);
+    text-align: center;
+    max-width: 380px;
+    font-weight: 400;
+}
+
+/* Process hero — identyczny jak hero-landing na index */
+.process-hero-as-hero {
+    /* dziedziczy wszystko z .hero-landing */
+}
+
+@media (max-width: 900px) {
+    .poem-subtext {
+        font-size: 0.9rem;
+        max-width: 100%;
     }
 }
