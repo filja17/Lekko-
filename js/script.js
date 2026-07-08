@@ -749,7 +749,6 @@ function openScarfModal(colorKey, scarfIndex) {
         <div class="modal-specs-grid">
             <p><strong>Materiał</strong><span>${scarf.material}</span></p>
             <p><strong>Wymiary</strong><span>${scarf.size}</span></p>
-            <p><strong>Proces</strong><span>${scarf.process}</span></p>
         </div>`;
 
     // Typ / cena
