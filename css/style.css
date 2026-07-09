@@ -664,6 +664,7 @@ body {
     height: 100%;
     background-color: rgba(40, 28, 20, 0.65);
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .modal-large.active {
@@ -680,6 +681,7 @@ body {
     position: relative;
     max-height: 92vh;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .modal-close {
@@ -3628,5 +3630,199 @@ body.collections-page .navbar.scrolled {
     .poem-subtext {
         font-size: 0.9rem;
         max-width: 100%;
+    }
+}
+
+/* ============================================
+   MODAL MOBILE — zablokuj horizontal scroll/bounce
+   ============================================ */
+@media (max-width: 900px) {
+    .modal-large {
+        overflow-x: hidden !important;
+        overscroll-behavior-x: none !important;
+        touch-action: pan-y !important;
+    }
+
+    .modal-large-content {
+        overflow-x: hidden !important;
+        overscroll-behavior: none !important;
+        touch-action: pan-y !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        box-sizing: border-box !important;
+    }
+
+    .modal-large-inner {
+        overflow-x: hidden !important;
+        width: 100% !important;
+    }
+
+    .modal-gallery-section {
+        overflow-x: hidden !important;
+        width: 100% !important;
+    }
+
+    .modal-main-image-container {
+        overflow: hidden !important;
+        width: 100% !important;
+    }
+
+    #modalMainImage {
+        /* Wyłącz natywny drag na obrazie */
+        -webkit-user-drag: none;
+        user-drag: none;
+        pointer-events: none;
+    }
+
+    /* Strzałki zawsze widoczne na mobile */
+    .modal-gallery-prev,
+    .modal-gallery-next {
+        opacity: 1 !important;
+        display: flex !important;
+    }
+}
+
+/* ============================================
+   MODAL MOBILE — przeprojektowanie
+   Zdjęcie duże i niezasłonięte, X poza zdjęciem
+   ============================================ */
+@media (max-width: 900px) {
+
+    /* Modal zajmuje cały ekran od góry */
+    .modal-large.active {
+        align-items: flex-start !important;
+        padding: 0 !important;
+        overflow-y: auto !important;
+    }
+
+    .modal-large-content {
+        max-height: none !important;
+        height: auto !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        border-radius: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    /* Układ pionowy: galeria na górze, info pod */
+    .modal-large-inner {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* X — poza zdjęciem, u góry prawej, na białym pasku */
+    .modal-close {
+        position: relative !important;
+        top: auto !important;
+        right: auto !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        padding: 0.8rem 1rem !important;
+        background: var(--white) !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        font-size: 1.5rem !important;
+        color: var(--text) !important;
+        z-index: 10 !important;
+    }
+
+    /* Galeria — zdjęcie pełna szerokość, bez paddings */
+    .modal-gallery-section {
+        padding: 0 !important;
+        background: none !important;
+        gap: 0 !important;
+    }
+
+    /* Główne zdjęcie — duże, kwadratowe */
+    .modal-main-image-container {
+        width: 100vw !important;
+        aspect-ratio: 1 !important;
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    #modalMainImage {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        pointer-events: none !important;
+    }
+
+    /* Strzałki — pod zdjęciem, nie na nim */
+    .modal-gallery-prev,
+    .modal-gallery-next {
+        position: static !important;
+        transform: none !important;
+        opacity: 1 !important;
+        background: var(--white) !important;
+        border: 1px solid var(--beige) !important;
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 1rem !important;
+    }
+
+    /* Rząd ze strzałkami i miniaturami pod zdjęciem */
+    .modal-gallery-controls {
+        display: flex !important;
+        align-items: center !important;
+        gap: 0.5rem !important;
+        padding: 0.8rem 1rem !important;
+        background: var(--white) !important;
+    }
+
+    /* Miniatury — 4 kwadraty obok strzałek */
+    .modal-thumbnails {
+        display: flex !important;
+        gap: 0.4rem !important;
+        flex: 1 !important;
+    }
+
+    .modal-thumb {
+        width: auto !important;
+        flex: 1 !important;
+        aspect-ratio: 1 !important;
+        height: auto !important;
+    }
+
+    /* Info — normalny scroll pod galerią */
+    .modal-info-section {
+        padding: 1.5rem 1.2rem 3rem !important;
+    }
+
+    .modal-header-info h2 {
+        font-size: 1.5rem !important;
+    }
+}
+
+/* DESKTOP — modal-gallery-controls zachowanie */
+.modal-gallery-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem;
+    background: #F0EBE4;
+}
+
+/* Na desktop X zostaje w prawym górnym rogu content */
+@media (min-width: 901px) {
+    .modal-close {
+        position: absolute !important;
+        top: 1.5rem !important;
+        right: 1.5rem !important;
+        width: 32px !important;
+        height: 32px !important;
+        padding: 0 !important;
+        background: none !important;
+        border: none !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    /* Strzałki na desktop — wróć na zdjęcie */
+    .modal-gallery-prev,
+    .modal-gallery-next {
+        position: static !important;
+        flex-shrink: 0;
     }
 }
