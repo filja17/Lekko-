@@ -53,17 +53,21 @@
     <!-- MODAL -->
     <div class="modal-large" id="scarfModal">
         <div class="modal-large-content">
-            <button class="modal-close" id="modalCloseBtn" aria-label="Zamknij">&times;</button>
-
             <div class="modal-large-inner">
 
                 <div class="modal-gallery-section">
+                    <!-- X poza zdjęciem — na pasku nad nim -->
+                            <!-- Główne zdjęcie — bez strzałek na nim -->
                     <div class="modal-main-image-container" id="modalMainContainer">
                         <img id="modalMainImage" src="" alt="">
+                    </div>
+
+                    <!-- Strzałki i miniatury POD zdjęciem -->
+                    <div class="modal-gallery-controls">
                         <button class="modal-gallery-prev" id="galleryPrev">&#8592;</button>
+                        <div class="modal-thumbnails" id="modalThumbnails"></div>
                         <button class="modal-gallery-next" id="galleryNext">&#8594;</button>
                     </div>
-                    <div class="modal-thumbnails" id="modalThumbnails"></div>
                 </div>
 
                 <div class="modal-info-section">
