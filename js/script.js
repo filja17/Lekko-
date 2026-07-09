@@ -817,6 +817,30 @@ function closeModal() {
     }
 }
 
+// Zablokuj poziomy bounce w modalu na iOS
+(function() {
+    let startX = 0;
+    let startY = 0;
+
+    document.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchmove', function(e) {
+        const modal = document.getElementById('scarfModal');
+        if (!modal || !modal.classList.contains('active')) return;
+
+        const dx = Math.abs(e.touches[0].clientX - startX);
+        const dy = Math.abs(e.touches[0].clientY - startY);
+
+        // Jeśli ruch bardziej poziomy niż pionowy — zablokuj całkowicie
+        if (dx > dy) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+})();
+
 // ============================================
 // EVENT LISTENERY
 // ============================================
