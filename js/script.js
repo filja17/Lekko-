@@ -596,39 +596,41 @@ grid.innerHTML = scarves.map((scarf, index) => {
             openScarfModal(color, index);
         });
 
-        // Hover — płynny crossfade przez nakładkę img
-        (function(c) {
-            const color = c.dataset.color;
-            const scarfIdx = c.dataset.scarfIndex;
-            const scarf = collections[color][scarfIdx];
-            if (!scarf || c.dataset.sold === 'true') return;
+      // Hover — płynny crossfade przez nakładkę img (aktywne TYLKO na urządzeniach z myszką)
+if (window.matchMedia('(hover: hover)').matches) {
+    (function(c) {
+        const color = c.dataset.color;
+        const scarfIdx = c.dataset.scarfIndex;
+        const scarf = collections[color][scarfIdx];
+        if (!scarf || c.dataset.sold === 'true') return;
 
-            const img1 = getImagePath(color, scarf, 1);
-            const img2 = getImagePath(color, scarf, 2);
+        const img1 = getImagePath(color, scarf, 1);
+        const img2 = getImagePath(color, scarf, 2);
 
-            // Preload
-            const preloadImg = new Image();
-            preloadImg.src = img2;
+        // Preload
+        const preloadImg = new Image();
+        preloadImg.src = img2;
 
-            // Stwórz nakładkę — drugie zdjęcie nad pierwszym, opacity:0
-            const overlay = document.createElement('div');
-            overlay.className = 'scarf-hover-overlay';
-            overlay.style.backgroundImage = `url('${img2}')`;
-            c.appendChild(overlay);
+        // Stwórz nakładkę — drugie zdjęcie nad pierwszym, opacity:0
+        const overlay = document.createElement('div');
+        overlay.className = 'scarf-hover-overlay';
+        overlay.style.backgroundImage = `url('${img2}')`;
+        c.appendChild(overlay);
 
-            let timer = null;
+        let timer = null;
 
-            c.addEventListener('mouseenter', function() {
-                timer = setTimeout(() => {
-                    overlay.style.opacity = '1';
-                }, 500);
-            });
+        c.addEventListener('mouseenter', function() {
+            timer = setTimeout(() => {
+                overlay.style.opacity = '1';
+            }, 500);
+        });
 
-            c.addEventListener('mouseleave', function() {
-                clearTimeout(timer);
-                overlay.style.opacity = '0';
-            });
-        })(card);
+        c.addEventListener('mouseleave', function() {
+            clearTimeout(timer);
+            overlay.style.opacity = '0';
+        });
+    })(card);
+}
 
         // Gdy brak zdjęcia — pokaż placeholder z nazwą
         const imgDiv = card.querySelector('.scarf-image-full');
@@ -661,17 +663,16 @@ function gallerySet(idx) {
     gallery.current = idx;
     const mainImg = document.getElementById('modalMainImage');
     if (mainImg) {
-        mainImg.style.transition = 'opacity 0.45s ease';
+        mainImg.style.transition = 'opacity 0.2s ease'; // Szybsza, czystsza zmiana
         mainImg.style.opacity = '0';
         setTimeout(() => {
             mainImg.src = gallery.images[idx];
             mainImg.style.opacity = '1';
-        }, 380);
+        }, 200); // Dokładne zgranie z czasem wygaszania (brak efektu prześwitywania)
     }
     document.querySelectorAll('#modalThumbnails .modal-thumb')
         .forEach((t, i) => t.classList.toggle('active', i === idx));
 }
-
 function openScarfModal(colorKey, scarfIndex) {
     const scarf = collections[colorKey][scarfIndex];
     const modal = document.getElementById('scarfModal');
@@ -751,9 +752,13 @@ function openScarfModal(colorKey, scarfIndex) {
             <p><strong>Wymiary</strong><span>${scarf.size}</span></p>
         </div>`;
 
-    // Typ / cena
-    document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector('.type-btn[data-type="original"]').classList.add('active');
+// Typ / cena — bezpieczne sprawdzenie (przyciski zostały usunięte z HTML)
+const typeBtns = document.querySelectorAll('.type-btn');
+if (typeBtns.length > 0) {
+    typeBtns.forEach(b => b.classList.remove('active'));
+    const originalBtn = document.querySelector('.type-btn[data-type="original"]');
+    if (originalBtn) originalBtn.classList.add('active');
+}
 
     // Przycisk zamówienia
     // Typ — tylko oryginał, brak wyboru
