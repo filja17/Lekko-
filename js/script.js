@@ -681,32 +681,64 @@ if (window.matchMedia('(hover: hover)').matches) {
 
 // Stan galerii
 let gallery = { images: [], current: 0 };
+let slider = { width: 0, dragging: false, horizontal: false, startX: 0, startY: 0, curX: 0 };
 
-function gallerySet(idx) {
-    if (!gallery.images || gallery.images.length <= 1) return;
-    if (idx < 0) idx = gallery.images.length - 1;
-    if (idx >= gallery.images.length) idx = 0;
-    gallery.current = idx;
+// Buduje pas z trzema zdjęciami (poprzednie / aktualne / następne) i ustawia go na środku
+function buildSlideTrack() {
+    const track = document.getElementById('modalSlideTrack');
+    const container = document.getElementById('modalMainContainer');
+    if (!track || !container || !gallery.images.length) return;
 
-    const mainImg = document.getElementById('modalMainImage');
-    if (mainImg) {
-        // Delikatne, spokojne przejście — mały ruch skali, dłuższy i łagodniejszy czas
-        mainImg.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        mainImg.style.opacity = '0';
-        mainImg.style.transform = 'scale(0.99)';
+    const n = gallery.images.length;
+    const prevIdx = (gallery.current - 1 + n) % n;
+    const nextIdx = (gallery.current + 1) % n;
 
-        setTimeout(() => {
-            mainImg.src = gallery.images[idx];
-            mainImg.style.opacity = '1';
-            mainImg.style.transform = 'scale(1)';
-        }, 220);
-    }
+    track.style.transition = 'none';
+    track.innerHTML = `
+        <img src="${gallery.images[prevIdx]}" draggable="false" alt="">
+        <img src="${gallery.images[gallery.current]}" draggable="false" alt="">
+        <img src="${gallery.images[nextIdx]}" draggable="false" alt="">
+    `;
 
-    // Aktualizuj podświetlenie aktywnej miniatury (strzałki, klawiatura, swipe)
+    slider.width = container.offsetWidth;
+    track.style.transform = `translateX(${-slider.width}px)`;
+
+    // Aktualizuj podświetlenie aktywnej miniatury
     document.querySelectorAll('.modal-thumb').forEach((t, i) => {
-        t.classList.toggle('active', i === idx);
+        t.classList.toggle('active', i === gallery.current);
     });
 }
+
+// Przesuwa o jedno zdjęcie w daną stronę — zjeżdża płynnie, bez zanikania (direction: 1 = dalej, -1 = wstecz)
+function slideTo(direction) {
+    if (!gallery.images || gallery.images.length <= 1) return;
+    const track = document.getElementById('modalSlideTrack');
+    if (!track) return;
+    const w = slider.width || document.getElementById('modalMainContainer').offsetWidth;
+
+    track.style.transition = 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)';
+    track.style.transform = `translateX(${-w - direction * w}px)`;
+
+    const onEnd = () => {
+        track.removeEventListener('transitionend', onEnd);
+        const n = gallery.images.length;
+        gallery.current = (gallery.current + direction + n) % n;
+        buildSlideTrack();
+    };
+    track.addEventListener('transitionend', onEnd, { once: true });
+}
+
+// Skok do dowolnego zdjęcia (kliknięcie miniatury) — bez animacji przesuwu, po prostu podmiana
+function gallerySet(idx) {
+    if (!gallery.images || gallery.images.length <= 1) return;
+    const n = gallery.images.length;
+    if (idx < 0) idx = n - 1;
+    if (idx >= n) idx = 0;
+    if (idx === gallery.current) return;
+    gallery.current = idx;
+    buildSlideTrack();
+}
+
 function openScarfModal(colorKey, scarfIndex) {
     const scarf = collections[colorKey][scarfIndex];
     const modal = document.getElementById('scarfModal');
@@ -721,8 +753,7 @@ function openScarfModal(colorKey, scarfIndex) {
     ];
     gallery.current = 0;
 
-    const mainImg = document.getElementById('modalMainImage');
-    if (mainImg) { mainImg.src = gallery.images[0]; mainImg.style.opacity = '1'; }
+    buildSlideTrack();
 
     // Miniatury — buduj dynamicznie
     const thumbsCont = document.getElementById('modalThumbnails');
@@ -736,56 +767,57 @@ function openScarfModal(colorKey, scarfIndex) {
         };
     }
 
-    // Strzałki
+    // Strzałki — ten sam płynny przesuw co przy swipe
     const prev = document.getElementById('galleryPrev');
     const next = document.getElementById('galleryNext');
-    if (prev) prev.onclick = () => gallerySet(gallery.current - 1);
-    if (next) next.onclick = () => gallerySet(gallery.current + 1);
+    if (prev) prev.onclick = () => slideTo(-1);
+    if (next) next.onclick = () => slideTo(1);
 
-// Swipe palcem — delikatny, podąża za palcem z tłumieniem (bez raptownych skoków)
+    // Swipe palcem — obraz jedzie 1:1 z palcem, po puszczeniu płynnie dojeżdża do kolejnego/poprzedniego
     const mainImgContainer = document.getElementById('modalMainContainer');
     if (mainImgContainer) {
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let touchCurrentX = 0;
-        let isSwiping = false;
-        const DAMPING = 0.4; // im mniej, tym delikatniejszy/wolniejszy ruch obrazu pod palcem
-
         mainImgContainer.ontouchstart = e => {
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-            touchCurrentX = touchStartX;
-            isSwiping = false;
-            mainImg.style.transition = 'none';
+            const track = document.getElementById('modalSlideTrack');
+            slider.dragging = true;
+            slider.horizontal = false;
+            slider.startX = e.touches[0].clientX;
+            slider.startY = e.touches[0].clientY;
+            slider.curX = slider.startX;
+            slider.width = mainImgContainer.offsetWidth;
+            if (track) track.style.transition = 'none';
         };
 
         mainImgContainer.ontouchmove = e => {
+            if (!slider.dragging) return;
+            const track = document.getElementById('modalSlideTrack');
+            if (!track) return;
             const x = e.touches[0].clientX;
             const y = e.touches[0].clientY;
-            const diffX = x - touchStartX;
-            const diffY = y - touchStartY;
+            const diffX = x - slider.startX;
+            const diffY = y - slider.startY;
 
-            // Jeśli ruch jest bardziej pionowy niż poziomy — to scroll, nie przełączanie zdjęć
-            if (!isSwiping && Math.abs(diffY) > Math.abs(diffX)) return;
+            // Ruch bardziej pionowy niż poziomy — to scroll strony, nie zmiana zdjęcia
+            if (!slider.horizontal && Math.abs(diffY) > Math.abs(diffX)) return;
 
-            isSwiping = true;
-            touchCurrentX = x;
-            mainImg.style.transform = `translateX(${diffX * DAMPING}px)`;
+            slider.horizontal = true;
+            slider.curX = x;
+            track.style.transform = `translateX(${-slider.width + diffX}px)`;
         };
 
         mainImgContainer.ontouchend = () => {
-            const diffX = touchCurrentX - touchStartX;
+            if (!slider.dragging) return;
+            slider.dragging = false;
+            const track = document.getElementById('modalSlideTrack');
+            const diffX = slider.curX - slider.startX;
 
-            // Płynny powrót/przejście — łagodny easing, bez szarpnięcia
-            mainImg.style.transition = 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)';
-            mainImg.style.transform = 'translateX(0)';
-
-            if (isSwiping && Math.abs(diffX) > 50) {
-                setTimeout(() => {
-                    gallerySet(gallery.current + (diffX < 0 ? 1 : -1));
-                }, 80);
+            if (slider.horizontal && Math.abs(diffX) > slider.width * 0.18) {
+                slideTo(diffX < 0 ? 1 : -1);
+            } else if (track) {
+                // Za mały ruch — łagodny powrót na miejsce
+                track.style.transition = 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)';
+                track.style.transform = `translateX(${-slider.width}px)`;
             }
-            isSwiping = false;
+            slider.horizontal = false;
         };
     }
 
@@ -793,8 +825,8 @@ function openScarfModal(colorKey, scarfIndex) {
     if (modal._keyHandler) document.removeEventListener('keydown', modal._keyHandler);
     modal._keyHandler = e => {
         if (!modal.classList.contains('active')) return;
-        if (e.key === 'ArrowRight') gallerySet(gallery.current + 1);
-        if (e.key === 'ArrowLeft')  gallerySet(gallery.current - 1);
+        if (e.key === 'ArrowRight') slideTo(1);
+        if (e.key === 'ArrowLeft')  slideTo(-1);
         if (e.key === 'Escape') closeModal();
     };
     document.addEventListener('keydown', modal._keyHandler);
