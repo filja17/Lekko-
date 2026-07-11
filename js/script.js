@@ -707,7 +707,7 @@ function openScarfModal(colorKey, scarfIndex) {
     const modal = document.getElementById('scarfModal');
     if (!scarf || !modal) return;
 
-    // Galeria
+    // Galeria obrazów chusty
     gallery.images = [
         getImagePath(colorKey, scarf, 1),
         getImagePath(colorKey, scarf, 2),
@@ -717,9 +717,13 @@ function openScarfModal(colorKey, scarfIndex) {
     gallery.current = 0;
 
     const mainImg = document.getElementById('modalMainImage');
-    if (mainImg) { mainImg.src = gallery.images[0]; mainImg.style.opacity = '1'; }
+    if (mainImg) { 
+        mainImg.src = gallery.images[0]; 
+        mainImg.style.opacity = '1'; 
+        mainImg.style.transform = 'scale(1)';
+    }
 
-    // Miniatury — buduj dynamicznie
+    // Dynamiczne budowanie miniatur (thumbnails)
     const thumbsCont = document.getElementById('modalThumbnails');
     if (thumbsCont) {
         thumbsCont.innerHTML = gallery.images.map((src, i) =>
@@ -727,17 +731,29 @@ function openScarfModal(colorKey, scarfIndex) {
         ).join('');
         thumbsCont.onclick = e => {
             const t = e.target.closest('.modal-thumb');
-            if (t) gallerySet(parseInt(t.dataset.idx));
+            if (t) {
+                gallerySet(parseInt(t.dataset.idx));
+                document.querySelectorAll('.modal-thumb').forEach((thumb, idx) => {
+                    thumb.classList.toggle('active', idx === gallery.current);
+                });
+            }
         };
     }
 
-    // Strzałki
+    // Obsługa strzałek nawigacyjnych galerii
     const prev = document.getElementById('galleryPrev');
     const next = document.getElementById('galleryNext');
-    if (prev) prev.onclick = () => gallerySet(gallery.current - 1);
-    if (next) next.onclick = () => gallerySet(gallery.current + 1);
+    if (prev) prev.onclick = () => { gallerySet(gallery.current - 1); updateModalThumbnails(); };
+    if (next) next.onclick = () => { gallerySet(gallery.current + 1); updateModalThumbnails(); };
 
-// Swipe palcem (Zoptymalizowany dla wersji smartfonowej)
+    // Funkcja pomocnicza do synchronizacji miniatur przy zmianie strzałkami
+    function updateModalThumbnails() {
+        document.querySelectorAll('.modal-thumb').forEach((thumb, idx) => {
+            thumb.classList.toggle('active', idx === gallery.current);
+        });
+    }
+
+    // Obsługa gestów Swipe (Smartphone / Mobile)
     const mainImgContainer = document.getElementById('modalMainContainer');
     if (mainImgContainer) {
         let touchStartX = 0;
@@ -752,61 +768,58 @@ function openScarfModal(colorKey, scarfIndex) {
             const diffX = touchStartX - e.changedTouches[0].clientX;
             const diffY = touchStartY - e.changedTouches[0].clientY;
 
-            // Reaguj tylko, jeśli ruch palca był poziomy (czyste przewijanie zdjęć lewo/prawo)
             if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
                 gallerySet(gallery.current + (diffX > 0 ? 1 : -1));
+                updateModalThumbnails();
             }
         };
     }
 
-    // Klawiatura — strzałki
+    // Obsługa zdarzeń klawiatury
     if (modal._keyHandler) document.removeEventListener('keydown', modal._keyHandler);
     modal._keyHandler = e => {
         if (!modal.classList.contains('active')) return;
-        if (e.key === 'ArrowRight') gallerySet(gallery.current + 1);
-        if (e.key === 'ArrowLeft')  gallerySet(gallery.current - 1);
+        if (e.key === 'ArrowRight') { gallerySet(gallery.current + 1); updateModalThumbnails(); }
+        if (e.key === 'ArrowLeft')  { gallerySet(gallery.current - 1); updateModalThumbnails(); }
         if (e.key === 'Escape') closeModal();
     };
     document.addEventListener('keydown', modal._keyHandler);
 
-    // Treść
+    // Dynamiczne wstrzykiwanie danych tekstowych do Modala
     document.getElementById('modalTitle').textContent = scarf.name;
-    document.getElementById('modalColor').textContent = '';
+    const colorLabel = document.getElementById('modalColor');
+    if (colorLabel) colorLabel.textContent = scarf.color || '';
     document.getElementById('modalDescription').textContent = scarf.description;
 
-    // Licznik ze Sheets lub default
-    const available = typeof scarfStock !== 'undefined' && scarfStock[scarf.serialNumber]
+    // Pobieranie stanów magazynowych (Google Sheets lub wartość domyślna)
+    const available = typeof scarfStock !== 'undefined' && scarfStock[scarf.serialNumber] !== undefined
         ? scarfStock[scarf.serialNumber]
         : (scarf.available !== undefined ? scarf.available : 8);
 
-    // No. II  8/8 — jedna linia
+    // Generowanie linii nagłówka specyfikacji (Numer seryjny + Dostępność)
     const numLine = scarf.roman ? `
         <div class="modal-num-line">
             <span class="modal-num">No.&thinsp;${scarf.roman}</span>
             <span class="modal-stock-inline">${available}&thinsp;/&thinsp;8</span>
         </div>` : '';
 
-    document.getElementById('modalDetails').innerHTML = `
-        ${numLine}
-        <div class="modal-specs-grid">
-            <p><strong>Materiał</strong><span>${scarf.material}</span></p>
-            <p><strong>Wymiary</strong><span>${scarf.size}</span></p>
-        </div>`;
+    const specsContainer = document.getElementById('modalDetails');
+    if (specsContainer) {
+        specsContainer.innerHTML = `
+            ${numLine}
+            <div class="modal-specs-grid">
+                <p><strong>Materiał</strong><span>${scarf.material}</span></p>
+                <p><strong>Wymiary</strong><span>${scarf.size}</span></p>
+                <p><strong>Proces</strong><span>${scarf.process}</span></p>
+                <p><strong>Seria</strong><span>${scarf.series}</span></p>
+            </div>`;
+    }
 
-// Typ / cena — bezpieczne sprawdzenie (przyciski zostały usunięte z HTML)
-const typeBtns = document.querySelectorAll('.type-btn');
-if (typeBtns.length > 0) {
-    typeBtns.forEach(b => b.classList.remove('active'));
-    const originalBtn = document.querySelector('.type-btn[data-type="original"]');
-    if (originalBtn) originalBtn.classList.add('active');
-}
-
-    // Przycisk zamówienia
-    // Typ — tylko oryginał, brak wyboru
-
+    // Zarządzanie widocznością przycisku zamówienia i statusu "Sprzedana"
     const orderBtn = document.getElementById('orderBtnLarge');
     const soldNotice = document.getElementById('modalSoldNotice');
-    if (scarf.soldOut) {
+    
+    if (scarf.soldOut || available <= 0) {
         if (orderBtn)   orderBtn.style.display   = 'none';
         if (soldNotice) soldNotice.style.display = 'block';
     } else {
@@ -819,14 +832,17 @@ if (typeBtns.length > 0) {
         if (soldNotice) soldNotice.style.display = 'none';
     }
 
+    // Zapisywanie stanu wybranej chusty w sesji przeglądarki (SessionStorage)
     sessionStorage.setItem('selectedScarf', scarf.name);
     sessionStorage.setItem('selectedColor', colorKey);
     sessionStorage.setItem('selectedIndex', scarfIndex);
     sessionStorage.setItem('selectedPrice', scarf.priceOriginal);
     sessionStorage.setItem('selectedType',  'original');
 
+    // Wyświetlenie modala i zablokowanie przewijania tła strony
     modal.classList.add('active');
-    modal.querySelector('.modal-large-content').scrollTop = 0;
+    const scrollContent = modal.querySelector('.modal-large-content');
+    if (scrollContent) scrollContent.scrollTop = 0;
     document.body.style.overflow = 'hidden';
     document.dispatchEvent(new Event('modal-opened'));
 }
