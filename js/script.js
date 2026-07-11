@@ -683,20 +683,24 @@ if (window.matchMedia('(hover: hover)').matches) {
 let gallery = { images: [], current: 0 };
 
 function gallerySet(idx) {
+    if (!gallery.images || gallery.images.length <= 1) return;
     if (idx < 0) idx = gallery.images.length - 1;
     if (idx >= gallery.images.length) idx = 0;
     gallery.current = idx;
+    
     const mainImg = document.getElementById('modalMainImage');
     if (mainImg) {
-        mainImg.style.transition = 'opacity 0.2s ease'; // Szybsza, czystsza zmiana
+        // Miękkie zanikanie i delikatne cofnięcie struktury zdjęcia
         mainImg.style.opacity = '0';
+        mainImg.style.transform = 'scale(0.97)'; 
+        
         setTimeout(() => {
             mainImg.src = gallery.images[idx];
+            // Płynne wyłonienie nowego zdjęcia na wymiar
             mainImg.style.opacity = '1';
-        }, 200); // Dokładne zgranie z czasem wygaszania (brak efektu prześwitywania)
+            mainImg.style.transform = 'scale(1)';
+        }, 180); // Precyzyjnie dobrany czas przejścia kinowego
     }
-    document.querySelectorAll('#modalThumbnails .modal-thumb')
-        .forEach((t, i) => t.classList.toggle('active', i === idx));
 }
 function openScarfModal(colorKey, scarfIndex) {
     const scarf = collections[colorKey][scarfIndex];
