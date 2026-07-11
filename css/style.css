@@ -3868,37 +3868,40 @@ body.collections-page .modal-close:hover {
     background: rgba(249, 247, 244, 1) !important;
 }
 
-/* ---------- DESKTOP (≥901px): strzałki widoczne od razu, na zdjęciu ---------- */
+/* ---------- DESKTOP (≥901px): strzałki subtelnie osadzone na zdjęciu ---------- */
 @media (min-width: 901px) {
     body.collections-page .modal-gallery-prev,
     body.collections-page .modal-gallery-next {
-        opacity: 1 !important;
+        opacity: 0.75 !important;
         visibility: visible !important;
         position: absolute !important;
         top: 50% !important;
         transform: translateY(-50%) !important;
-        width: 44px !important;
-        height: 44px !important;
+        width: 38px !important;
+        height: 38px !important;
         border-radius: 50% !important;
-        background: rgba(249, 247, 244, 0.92) !important;
-        border: 1px solid rgba(122, 104, 85, 0.25) !important;
+        background: rgba(249, 247, 244, 0.55) !important;
+        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        backdrop-filter: blur(3px);
         color: var(--umbra) !important;
-        font-size: 1.3rem !important;
+        font-size: 1.1rem !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         cursor: pointer !important;
         z-index: 15 !important;
-        transition: background 0.25s ease, transform 0.25s ease;
+        transition: opacity 0.25s ease, background 0.25s ease, transform 0.25s ease;
     }
-    body.collections-page .modal-gallery-prev { left: 1rem !important; }
-    body.collections-page .modal-gallery-next { right: 1rem !important; }
+    body.collections-page .modal-gallery-prev { left: 0.85rem !important; }
+    body.collections-page .modal-gallery-next { right: 0.85rem !important; }
     body.collections-page .modal-gallery-prev:hover {
-        background: rgba(249, 247, 244, 1) !important;
+        opacity: 1 !important;
+        background: rgba(249, 247, 244, 0.85) !important;
         transform: translateY(-50%) translateX(-2px) !important;
     }
     body.collections-page .modal-gallery-next:hover {
-        background: rgba(249, 247, 244, 1) !important;
+        opacity: 1 !important;
+        background: rgba(249, 247, 244, 0.85) !important;
         transform: translateY(-50%) translateX(2px) !important;
     }
     /* Miniatury zostają jako osobny, wyśrodkowany pasek pod zdjęciem */
