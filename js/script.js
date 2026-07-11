@@ -687,27 +687,32 @@ function gallerySet(idx) {
     if (idx < 0) idx = gallery.images.length - 1;
     if (idx >= gallery.images.length) idx = 0;
     gallery.current = idx;
-    
+
     const mainImg = document.getElementById('modalMainImage');
     if (mainImg) {
-        // Miękkie zanikanie i delikatne cofnięcie struktury zdjęcia
+        // Delikatne, spokojne przejście — mały ruch skali, dłuższy i łagodniejszy czas
+        mainImg.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
         mainImg.style.opacity = '0';
-        mainImg.style.transform = 'scale(0.97)'; 
-        
+        mainImg.style.transform = 'scale(0.99)';
+
         setTimeout(() => {
             mainImg.src = gallery.images[idx];
-            // Płynne wyłonienie nowego zdjęcia na wymiar
             mainImg.style.opacity = '1';
             mainImg.style.transform = 'scale(1)';
-        }, 180); // Precyzyjnie dobrany czas przejścia kinowego
+        }, 220);
     }
+
+    // Aktualizuj podświetlenie aktywnej miniatury (strzałki, klawiatura, swipe)
+    document.querySelectorAll('.modal-thumb').forEach((t, i) => {
+        t.classList.toggle('active', i === idx);
+    });
 }
 function openScarfModal(colorKey, scarfIndex) {
     const scarf = collections[colorKey][scarfIndex];
     const modal = document.getElementById('scarfModal');
     if (!scarf || !modal) return;
 
-    // Galeria obrazów chusty
+    // Galeria
     gallery.images = [
         getImagePath(colorKey, scarf, 1),
         getImagePath(colorKey, scarf, 2),
@@ -717,13 +722,9 @@ function openScarfModal(colorKey, scarfIndex) {
     gallery.current = 0;
 
     const mainImg = document.getElementById('modalMainImage');
-    if (mainImg) { 
-        mainImg.src = gallery.images[0]; 
-        mainImg.style.opacity = '1'; 
-        mainImg.style.transform = 'scale(1)';
-    }
+    if (mainImg) { mainImg.src = gallery.images[0]; mainImg.style.opacity = '1'; }
 
-    // Dynamiczne budowanie miniatur (thumbnails)
+    // Miniatury — buduj dynamicznie
     const thumbsCont = document.getElementById('modalThumbnails');
     if (thumbsCont) {
         thumbsCont.innerHTML = gallery.images.map((src, i) =>
@@ -731,95 +732,111 @@ function openScarfModal(colorKey, scarfIndex) {
         ).join('');
         thumbsCont.onclick = e => {
             const t = e.target.closest('.modal-thumb');
-            if (t) {
-                gallerySet(parseInt(t.dataset.idx));
-                document.querySelectorAll('.modal-thumb').forEach((thumb, idx) => {
-                    thumb.classList.toggle('active', idx === gallery.current);
-                });
-            }
+            if (t) gallerySet(parseInt(t.dataset.idx));
         };
     }
 
-    // Obsługa strzałek nawigacyjnych galerii
+    // Strzałki
     const prev = document.getElementById('galleryPrev');
     const next = document.getElementById('galleryNext');
-    if (prev) prev.onclick = () => { gallerySet(gallery.current - 1); updateModalThumbnails(); };
-    if (next) next.onclick = () => { gallerySet(gallery.current + 1); updateModalThumbnails(); };
+    if (prev) prev.onclick = () => gallerySet(gallery.current - 1);
+    if (next) next.onclick = () => gallerySet(gallery.current + 1);
 
-    // Funkcja pomocnicza do synchronizacji miniatur przy zmianie strzałkami
-    function updateModalThumbnails() {
-        document.querySelectorAll('.modal-thumb').forEach((thumb, idx) => {
-            thumb.classList.toggle('active', idx === gallery.current);
-        });
-    }
-
-    // Obsługa gestów Swipe (Smartphone / Mobile)
+// Swipe palcem — delikatny, podąża za palcem z tłumieniem (bez raptownych skoków)
     const mainImgContainer = document.getElementById('modalMainContainer');
     if (mainImgContainer) {
         let touchStartX = 0;
         let touchStartY = 0;
+        let touchCurrentX = 0;
+        let isSwiping = false;
+        const DAMPING = 0.4; // im mniej, tym delikatniejszy/wolniejszy ruch obrazu pod palcem
 
-        mainImgContainer.ontouchstart = e => { 
-            touchStartX = e.touches[0].clientX; 
-            touchStartY = e.touches[0].clientY; 
+        mainImgContainer.ontouchstart = e => {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            touchCurrentX = touchStartX;
+            isSwiping = false;
+            mainImg.style.transition = 'none';
         };
 
-        mainImgContainer.ontouchend = e => {
-            const diffX = touchStartX - e.changedTouches[0].clientX;
-            const diffY = touchStartY - e.changedTouches[0].clientY;
+        mainImgContainer.ontouchmove = e => {
+            const x = e.touches[0].clientX;
+            const y = e.touches[0].clientY;
+            const diffX = x - touchStartX;
+            const diffY = y - touchStartY;
 
-            if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
-                gallerySet(gallery.current + (diffX > 0 ? 1 : -1));
-                updateModalThumbnails();
+            // Jeśli ruch jest bardziej pionowy niż poziomy — to scroll, nie przełączanie zdjęć
+            if (!isSwiping && Math.abs(diffY) > Math.abs(diffX)) return;
+
+            isSwiping = true;
+            touchCurrentX = x;
+            mainImg.style.transform = `translateX(${diffX * DAMPING}px)`;
+        };
+
+        mainImgContainer.ontouchend = () => {
+            const diffX = touchCurrentX - touchStartX;
+
+            // Płynny powrót/przejście — łagodny easing, bez szarpnięcia
+            mainImg.style.transition = 'transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)';
+            mainImg.style.transform = 'translateX(0)';
+
+            if (isSwiping && Math.abs(diffX) > 50) {
+                setTimeout(() => {
+                    gallerySet(gallery.current + (diffX < 0 ? 1 : -1));
+                }, 80);
             }
+            isSwiping = false;
         };
     }
 
-    // Obsługa zdarzeń klawiatury
+    // Klawiatura — strzałki
     if (modal._keyHandler) document.removeEventListener('keydown', modal._keyHandler);
     modal._keyHandler = e => {
         if (!modal.classList.contains('active')) return;
-        if (e.key === 'ArrowRight') { gallerySet(gallery.current + 1); updateModalThumbnails(); }
-        if (e.key === 'ArrowLeft')  { gallerySet(gallery.current - 1); updateModalThumbnails(); }
+        if (e.key === 'ArrowRight') gallerySet(gallery.current + 1);
+        if (e.key === 'ArrowLeft')  gallerySet(gallery.current - 1);
         if (e.key === 'Escape') closeModal();
     };
     document.addEventListener('keydown', modal._keyHandler);
 
-    // Dynamiczne wstrzykiwanie danych tekstowych do Modala
+    // Treść
     document.getElementById('modalTitle').textContent = scarf.name;
-    const colorLabel = document.getElementById('modalColor');
-    if (colorLabel) colorLabel.textContent = scarf.color || '';
+    document.getElementById('modalColor').textContent = '';
     document.getElementById('modalDescription').textContent = scarf.description;
 
-    // Pobieranie stanów magazynowych (Google Sheets lub wartość domyślna)
-    const available = typeof scarfStock !== 'undefined' && scarfStock[scarf.serialNumber] !== undefined
+    // Licznik ze Sheets lub default
+    const available = typeof scarfStock !== 'undefined' && scarfStock[scarf.serialNumber]
         ? scarfStock[scarf.serialNumber]
         : (scarf.available !== undefined ? scarf.available : 8);
 
-    // Generowanie linii nagłówka specyfikacji (Numer seryjny + Dostępność)
+    // No. II  8/8 — jedna linia
     const numLine = scarf.roman ? `
         <div class="modal-num-line">
             <span class="modal-num">No.&thinsp;${scarf.roman}</span>
             <span class="modal-stock-inline">${available}&thinsp;/&thinsp;8</span>
         </div>` : '';
 
-    const specsContainer = document.getElementById('modalDetails');
-    if (specsContainer) {
-        specsContainer.innerHTML = `
-            ${numLine}
-            <div class="modal-specs-grid">
-                <p><strong>Materiał</strong><span>${scarf.material}</span></p>
-                <p><strong>Wymiary</strong><span>${scarf.size}</span></p>
-                <p><strong>Proces</strong><span>${scarf.process}</span></p>
-                <p><strong>Seria</strong><span>${scarf.series}</span></p>
-            </div>`;
-    }
+    document.getElementById('modalDetails').innerHTML = `
+        ${numLine}
+        <div class="modal-specs-grid">
+            <p><strong>Materiał</strong><span>${scarf.material}</span></p>
+            <p><strong>Wymiary</strong><span>${scarf.size}</span></p>
+        </div>`;
 
-    // Zarządzanie widocznością przycisku zamówienia i statusu "Sprzedana"
+// Typ / cena — bezpieczne sprawdzenie (przyciski zostały usunięte z HTML)
+const typeBtns = document.querySelectorAll('.type-btn');
+if (typeBtns.length > 0) {
+    typeBtns.forEach(b => b.classList.remove('active'));
+    const originalBtn = document.querySelector('.type-btn[data-type="original"]');
+    if (originalBtn) originalBtn.classList.add('active');
+}
+
+    // Przycisk zamówienia
+    // Typ — tylko oryginał, brak wyboru
+
     const orderBtn = document.getElementById('orderBtnLarge');
     const soldNotice = document.getElementById('modalSoldNotice');
-    
-    if (scarf.soldOut || available <= 0) {
+    if (scarf.soldOut) {
         if (orderBtn)   orderBtn.style.display   = 'none';
         if (soldNotice) soldNotice.style.display = 'block';
     } else {
@@ -832,17 +849,14 @@ function openScarfModal(colorKey, scarfIndex) {
         if (soldNotice) soldNotice.style.display = 'none';
     }
 
-    // Zapisywanie stanu wybranej chusty w sesji przeglądarki (SessionStorage)
     sessionStorage.setItem('selectedScarf', scarf.name);
     sessionStorage.setItem('selectedColor', colorKey);
     sessionStorage.setItem('selectedIndex', scarfIndex);
     sessionStorage.setItem('selectedPrice', scarf.priceOriginal);
     sessionStorage.setItem('selectedType',  'original');
 
-    // Wyświetlenie modala i zablokowanie przewijania tła strony
     modal.classList.add('active');
-    const scrollContent = modal.querySelector('.modal-large-content');
-    if (scrollContent) scrollContent.scrollTop = 0;
+    modal.querySelector('.modal-large-content').scrollTop = 0;
     document.body.style.overflow = 'hidden';
     document.dispatchEvent(new Event('modal-opened'));
 }
@@ -974,26 +988,61 @@ document.addEventListener('DOMContentLoaded', function() {
             opacity: 1;
             border-color: #7A6855;
         }
+        /* Wyraźne, wygodne strzałki nawigacji (Web) */
         .modal-gallery-prev, .modal-gallery-next {
-            background: none;
-            border: none;
-            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #fff;
+            border: 1px solid rgba(122, 104, 85, 0.35);
+            font-size: 1.25rem;
             cursor: pointer;
             color: #7A6855;
-            padding: 0 10px;
-            transition: transform 0.2s;
+            padding: 0;
+            transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.2s ease;
         }
-        .modal-gallery-prev:hover { transform: translateX(-3px); }
-        .modal-gallery-next:hover { transform: translateX(3px); }
+        .modal-gallery-prev:hover, .modal-gallery-next:hover {
+            background: #7A6855;
+            color: #fff;
+            border-color: #7A6855;
+        }
+        .modal-gallery-prev:hover { transform: translateX(-2px); }
+        .modal-gallery-next:hover { transform: translateX(2px); }
 
         /* WERSJA SMARTFONOWA (Mobile) */
         @media (max-width: 768px) {
             .modal-main-image-container {
-                height: 65vh; /* Wysokość zdjęcia idealna pod ekrany telefonów */
+                width: 100%;
+                aspect-ratio: 1; /* proporcjonalne zdjęcie, dopasowane do mniejszego modala */
+                height: auto;
             }
-            /* Całkowite ukrycie paska miniatur i strzałek na dole ekranu */
+            /* Brak strzałek i miniatur na telefonie — nawigacja tylko przez przesunięcie palcem */
             .modal-gallery-controls {
                 display: none !important;
+            }
+
+            /* Modal nie zajmuje całego ekranu — widać tło wokół,
+               dzięki czemu wyraźnie czuć że to okienko i łatwo je zamknąć stukając obok */
+            .modal-large.active {
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 4vh 4vw !important;
+            }
+            .modal-large-content {
+                width: 100% !important;
+                max-width: 460px !important;
+                height: auto !important;
+                max-height: 88vh !important;
+                border-radius: 16px !important;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                margin: 0 auto !important;
+            }
+            .modal-close {
+                border-radius: 16px 16px 0 0 !important;
             }
         }
     `;
