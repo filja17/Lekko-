@@ -598,38 +598,63 @@ grid.innerHTML = scarves.map((scarf, index) => {
 
       // Hover — płynny crossfade przez nakładkę img (aktywne TYLKO na urządzeniach z myszką)
 if (window.matchMedia('(hover: hover)').matches) {
-    (function(c) {
-        const color = c.dataset.color;
-        const scarfIdx = c.dataset.scarfIndex;
-        const scarf = collections[color][scarfIdx];
-        if (!scarf || c.dataset.sold === 'true') return;
+  // Hover — płynny crossfade przez nakładkę img (Zabezpieczony przed rozjeżdżaniem i błędami na mobile)
+        (function(c) {
+            const color = c.dataset.color;
+            const scarfIdx = c.dataset.scarfIndex;
+            const scarf = collections[color][scarfIdx];
+            if (!scarf || c.dataset.sold === 'true') return;
 
-        const img1 = getImagePath(color, scarf, 1);
-        const img2 = getImagePath(color, scarf, 2);
+            // Szukamy właściwego kontenera na obrazek
+            const imgDiv = c.querySelector('.scarf-image-full');
+            if (!imgDiv) return;
 
-        // Preload
-        const preloadImg = new Image();
-        preloadImg.src = img2;
+            const img2 = getImagePath(color, scarf, 2);
 
-        // Stwórz nakładkę — drugie zdjęcie nad pierwszym, opacity:0
-        const overlay = document.createElement('div');
-        overlay.className = 'scarf-hover-overlay';
-        overlay.style.backgroundImage = `url('${img2}')`;
-        c.appendChild(overlay);
+            // Preload drugiego zdjęcia w tle
+            const preloadImg = new Image();
+            preloadImg.src = img2;
 
-        let timer = null;
+            // Wymuszamy poprawne pozycjonowanie kontenera głównego
+            imgDiv.style.position = 'relative';
+            imgDiv.style.overflow = 'hidden';
 
-        c.addEventListener('mouseenter', function() {
-            timer = setTimeout(() => {
-                overlay.style.opacity = '1';
-            }, 500);
-        });
-
-        c.addEventListener('mouseleave', function() {
-            clearTimeout(timer);
+            // Tworzymy nakładkę ukrytą pod spodem
+            const overlay = document.createElement('div');
+            overlay.className = 'scarf-hover-overlay';
+            
+            // Wstrzykujemy brakujące style CSS inline, aby uniezależnić się od błędów AI w plikach stylów
+            overlay.style.position = 'absolute';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundImage = `url('${img2}')`;
+            overlay.style.backgroundSize = 'cover';       // Zmusza zdjęcie do idealnego dopasowania (brak zoomu x4)
+            overlay.style.backgroundPosition = 'center';
             overlay.style.opacity = '0';
-        });
-    })(card);
+            overlay.style.transition = 'opacity 0.4s ease';
+            overlay.style.pointerEvents = 'none';          // Sprawia, że nakładka jest "niewidzialna" dla kliknięć/tapań
+
+            // Dołączamy nakładkę BEZPOŚREDNIO do kontenera zdjęcia, a nie do całej karty
+            imgDiv.appendChild(overlay);
+
+            // Aktywujemy efekt przełączania TYLKO na komputerach posiadających fizyczną myszkę
+            if (window.matchMedia('(hover: hover)').matches) {
+                let timer = null;
+
+                c.addEventListener('mouseenter', function() {
+                    timer = setTimeout(() => {
+                        overlay.style.opacity = '1';
+                    }, 150); // Naturalny, szybki czas reakcji
+                });
+
+                c.addEventListener('mouseleave', function() {
+                    clearTimeout(timer);
+                    overlay.style.opacity = '0';
+                });
+            }
+        })(card);
 }
 
         // Gdy brak zdjęcia — pokaż placeholder z nazwą
