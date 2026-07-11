@@ -733,13 +733,25 @@ function openScarfModal(colorKey, scarfIndex) {
     if (prev) prev.onclick = () => gallerySet(gallery.current - 1);
     if (next) next.onclick = () => gallerySet(gallery.current + 1);
 
-    // Swipe
-    let tx = 0;
-    if (mainImg) {
-        mainImg.ontouchstart = e => { tx = e.touches[0].clientX; };
-        mainImg.ontouchend   = e => {
-            const d = tx - e.changedTouches[0].clientX;
-            if (Math.abs(d) > 40) gallerySet(gallery.current + (d > 0 ? 1 : -1));
+// Swipe palcem (Zoptymalizowany dla wersji smartfonowej)
+    const mainImgContainer = document.getElementById('modalMainContainer');
+    if (mainImgContainer) {
+        let touchStartX = 0;
+        let touchStartY = 0;
+
+        mainImgContainer.ontouchstart = e => { 
+            touchStartX = e.touches[0].clientX; 
+            touchStartY = e.touches[0].clientY; 
+        };
+
+        mainImgContainer.ontouchend = e => {
+            const diffX = touchStartX - e.changedTouches[0].clientX;
+            const diffY = touchStartY - e.changedTouches[0].clientY;
+
+            // Reaguj tylko, jeśli ruch palca był poziomy (czyste przewijanie zdjęć lewo/prawo)
+            if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+                gallerySet(gallery.current + (diffX > 0 ? 1 : -1));
+            }
         };
     }
 
@@ -894,6 +906,78 @@ document.addEventListener('input', function(e) {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+    // --- AUTOMATYCZNA NAPRAWA GALERII MODALA (WEB & SMARTPHONE) ---
+    const modalStyle = document.createElement('style');
+    modalStyle.textContent = `
+        /* Wygląd głównego kontenera zdjęcia */
+        .modal-main-image-container {
+            width: 100%;
+            height: 500px;
+            background: #fdfbf7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        #modalMainImage {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Zdjęcie dopasuje się idealnie bez obcinania */
+            display: block;
+        }
+        /* Pasek sterowania na komputerze (Web) */
+        .modal-gallery-controls {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 15px;
+            width: 100%;
+        }
+        .modal-thumbnails {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        /* Blokada rozrywania zdjęć — miniatury na Web mają sztywne wymiary */
+        .modal-thumb {
+            width: 60px !important;
+            height: 60px !important;
+            object-fit: cover !important;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .modal-thumb.active {
+            opacity: 1;
+            border-color: #7A6855;
+        }
+        .modal-gallery-prev, .modal-gallery-next {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #7A6855;
+            padding: 0 10px;
+            transition: transform 0.2s;
+        }
+        .modal-gallery-prev:hover { transform: translateX(-3px); }
+        .modal-gallery-next:hover { transform: translateX(3px); }
+
+        /* WERSJA SMARTFONOWA (Mobile) */
+        @media (max-width: 768px) {
+            .modal-main-image-container {
+                height: 65vh; /* Wysokość zdjęcia idealna pod ekrany telefonów */
+            }
+            /* Całkowite ukrycie paska miniatur i strzałek na dole ekranu */
+            .modal-gallery-controls {
+                display: none !important;
+            }
+        }
+    `;
+    document.head.appendChild(modalStyle);
     const scarvesGrid = document.getElementById('scarvesGrid');
     if (scarvesGrid) {
         renderCollection('beige');
