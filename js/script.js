@@ -737,23 +737,43 @@ function openScarfModal(colorKey, scarfIndex) {
     if (prev) prev.onclick = () => gallerySet(gallery.current - 1);
     if (next) next.onclick = () => gallerySet(gallery.current + 1);
 
-// Swipe palcem (Zoptymalizowany dla wersji smartfonowej)
-    const mainImgContainer = document.getElementById('modalMainContainer');
-    if (mainImgContainer) {
+// --- GENEROWANIE STRZAŁEK DLA WEB + SUPER-DELIKATNY SWIPE DLA MOBILE ---
+    const mainImg = document.getElementById('modalMainImage');
+    if (mainImg && mainImg.parentElement) {
+        const container = mainImg.parentElement;
+
+        // 1. Dynamiczne wstrzyknięcie strzałek bocznych dla wersji komputerowej (Web)
+        if (!container.querySelector('.web-floating-arrow.prev')) {
+            const prevBtn = document.createElement('div');
+            prevBtn.className = 'web-floating-arrow prev';
+            prevBtn.innerHTML = '&#10216;'; // Elegancki znak ⟨
+            prevBtn.onclick = (e) => { e.stopPropagation(); gallerySet(gallery.current - 1); };
+            container.appendChild(prevBtn);
+        }
+        if (!container.querySelector('.web-floating-arrow.next')) {
+            const nextBtn = document.createElement('div');
+            nextBtn.className = 'web-floating-arrow next';
+            nextBtn.innerHTML = '&#10217;'; // Elegancki znak ⟩
+            nextBtn.onclick = (e) => { e.stopPropagation(); gallerySet(gallery.current + 1); };
+            container.appendChild(nextBtn);
+        }
+
+        // 2. Bardziej czuły, aksamitny gest przesunięcia na smartfonie
         let touchStartX = 0;
         let touchStartY = 0;
 
-        mainImgContainer.ontouchstart = e => { 
+        container.ontouchstart = e => { 
             touchStartX = e.touches[0].clientX; 
             touchStartY = e.touches[0].clientY; 
         };
 
-        mainImgContainer.ontouchend = e => {
+        container.ontouchend = e => {
             const diffX = touchStartX - e.changedTouches[0].clientX;
             const diffY = touchStartY - e.changedTouches[0].clientY;
 
-            // Reaguj tylko, jeśli ruch palca był poziomy (czyste przewijanie zdjęć lewo/prawo)
-            if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+            // Obniżono próg czułości z 45 do 25 pikseli. 
+            // Galeria reaguje teraz na bardzo lekki, naturalny ruch palca, bez oporów.
+            if (Math.abs(diffX) > 25 && Math.abs(diffX) > Math.abs(diffY)) {
                 gallerySet(gallery.current + (diffX > 0 ? 1 : -1));
             }
         };
@@ -910,72 +930,93 @@ document.addEventListener('input', function(e) {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    // --- AUTOMATYCZNA NAPRAWA GALERII MODALA (WEB & SMARTPHONE) ---
+  // --- ULEPSZONA NAPRAWA GALERII MODALA (LEKKOŚĆ, BOCZNE STRZAŁKI, PŁYNNOŚĆ) ---
     const modalStyle = document.createElement('style');
     modalStyle.textContent = `
-        /* Wygląd głównego kontenera zdjęcia */
+        /* Margines od krawędzi ekranu — delikatny prześwit kolekcji pod spodem */
+        .modal, #scarfModal {
+            padding: 15px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-sizing: border-box !important;
+        }
+        .modal-content {
+            margin: auto !important;
+            max-width: calc(100% - 30px) !important;
+            max-height: calc(100vh - 30px) !important;
+            border-radius: 14px !important;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12) !important;
+            overflow: hidden !important;
+        }
+
+        /* Główny kontener zdjęcia */
         .modal-main-image-container {
             width: 100%;
-            height: 500px;
+            height: 480px;
             background: #fdfbf7;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            position: relative;
+            position: relative; /* Kluczowe dla pozycjonowania bocznych strzałek */
         }
+        
+        /* Ultra-płynne, delikatne przejście obrazu (brak twardego efektu) */
         #modalMainImage {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Zdjęcie dopasuje się idealnie bez obcinania */
+            object-fit: contain;
             display: block;
-        }
-        /* Pasek sterowania na komputerze (Web) */
-        .modal-gallery-controls {
-            display: flex !important;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 15px;
-            width: 100%;
-        }
-        .modal-thumbnails {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-        }
-        /* Blokada rozrywania zdjęć — miniatury na Web mają sztywne wymiary */
-        .modal-thumb {
-            width: 60px !important;
-            height: 60px !important;
-            object-fit: cover !important;
-            cursor: pointer;
-            opacity: 0.4;
-            transition: opacity 0.2s ease;
-            border: 1px solid transparent;
-        }
-        .modal-thumb.active {
             opacity: 1;
-            border-color: #7A6855;
+            transform: scale(1);
+            transition: opacity 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
         }
-        .modal-gallery-prev, .modal-gallery-next {
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #7A6855;
-            padding: 0 10px;
-            transition: transform 0.2s;
+
+        /* Nowoczesne, pływające strzałki boczne dla wersji komputerowej (Web) */
+        .web-floating-arrow {
+            display: none; /* Domyślnie ukryte na smartfonach */
         }
-        .modal-gallery-prev:hover { transform: translateX(-3px); }
-        .modal-gallery-next:hover { transform: translateX(3px); }
+
+        @media (min-width: 769px) {
+            .web-floating-arrow {
+                display: flex !important;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 44px;
+                height: 44px;
+                background: rgba(253, 251, 247, 0.85);
+                border: 1px solid #7A6855;
+                border-radius: 50%;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                color: #7A6855;
+                font-size: 1.4rem;
+                z-index: 99;
+                transition: all 0.25s ease;
+                user-select: none;
+            }
+            .web-floating-arrow:hover {
+                background: #7A6855;
+                color: #fdfbf7;
+                transform: translateY(-50%) scale(1.05);
+            }
+            .web-floating-arrow.prev { left: 20px; }
+            .web-floating-arrow.next { right: 20px; }
+
+            /* Całkowicie ukrywamy stary, dolny pasek sterowania na Web */
+            .modal-gallery-controls {
+                display: none !important;
+            }
+        }
 
         /* WERSJA SMARTFONOWA (Mobile) */
         @media (max-width: 768px) {
             .modal-main-image-container {
-                height: 65vh; /* Wysokość zdjęcia idealna pod ekrany telefonów */
+                height: 60vh;
             }
-            /* Całkowite ukrycie paska miniatur i strzałek na dole ekranu */
             .modal-gallery-controls {
                 display: none !important;
             }
