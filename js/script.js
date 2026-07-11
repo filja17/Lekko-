@@ -737,8 +737,8 @@ function openScarfModal(colorKey, scarfIndex) {
     if (prev) prev.onclick = () => gallerySet(gallery.current - 1);
     if (next) next.onclick = () => gallerySet(gallery.current + 1);
 
-// --- GENEROWANIE STRZAŁEK DLA WEB + SUPER-DELIKATNY SWIPE DLA MOBILE ---
-    const mainImg = document.getElementById('modalMainImage');
+    // --- GENEROWANIE STRZAŁEK DLA WEB + SUPER-DELIKATNY SWIPE DLA MOBILE ---
+    // Usunięto stąd dublującą się deklarację 'const mainImg', zmienna jest brana z góry funkcji
     if (mainImg && mainImg.parentElement) {
         const container = mainImg.parentElement;
 
@@ -771,8 +771,6 @@ function openScarfModal(colorKey, scarfIndex) {
             const diffX = touchStartX - e.changedTouches[0].clientX;
             const diffY = touchStartY - e.changedTouches[0].clientY;
 
-            // Obniżono próg czułości z 45 do 25 pikseli. 
-            // Galeria reaguje teraz na bardzo lekki, naturalny ruch palca, bez oporów.
             if (Math.abs(diffX) > 25 && Math.abs(diffX) > Math.abs(diffY)) {
                 gallerySet(gallery.current + (diffX > 0 ? 1 : -1));
             }
@@ -813,17 +811,15 @@ function openScarfModal(colorKey, scarfIndex) {
             <p><strong>Wymiary</strong><span>${scarf.size}</span></p>
         </div>`;
 
-// Typ / cena — bezpieczne sprawdzenie (przyciski zostały usunięte z HTML)
-const typeBtns = document.querySelectorAll('.type-btn');
-if (typeBtns.length > 0) {
-    typeBtns.forEach(b => b.classList.remove('active'));
-    const originalBtn = document.querySelector('.type-btn[data-type="original"]');
-    if (originalBtn) originalBtn.classList.add('active');
-}
+    // Typ / cena — bezpieczne sprawdzenie
+    const typeBtns = document.querySelectorAll('.type-btn');
+    if (typeBtns.length > 0) {
+        typeBtns.forEach(b => b.classList.remove('active'));
+        const originalBtn = document.querySelector('.type-btn[data-type="original"]');
+        if (originalBtn) originalBtn.classList.add('active');
+    }
 
     // Przycisk zamówienia
-    // Typ — tylko oryginał, brak wyboru
-
     const orderBtn = document.getElementById('orderBtnLarge');
     const soldNotice = document.getElementById('modalSoldNotice');
     if (scarf.soldOut) {
