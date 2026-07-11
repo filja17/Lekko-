@@ -3826,3 +3826,117 @@ body.collections-page .navbar.scrolled {
         flex-shrink: 0;
     }
 }
+
+/* ============================================
+   COLLECTIONS MODAL — FINALNE POPRAWKI
+   (strzałki na desktopie, X na zdjęciu, mniejszy modal na telefonie)
+
+   Selektory celowo wzmocnione prefiksem "body.collections-page", żeby ich
+   specyficzność była wyższa niż we wcześniejszych, sprzecznych regułach w
+   tym pliku — dzięki temu wygrywają zawsze, niezależnie od kolejności.
+   ============================================ */
+
+body.collections-page .modal-gallery-section,
+body.collections-page .modal-main-image-container {
+    position: relative;
+}
+
+/* X — zawsze na zdjęciu, okrągły przycisk z półprzezroczystym tłem */
+body.collections-page .modal-close {
+    position: absolute !important;
+    top: 0.9rem !important;
+    right: 0.9rem !important;
+    left: auto !important;
+    bottom: auto !important;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    background: rgba(249, 247, 244, 0.9) !important;
+    color: var(--umbra) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.3rem !important;
+    line-height: 1 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: 0 2px 10px rgba(40, 28, 20, 0.18);
+    z-index: 20 !important;
+    transition: background 0.25s ease;
+}
+body.collections-page .modal-close:hover {
+    background: rgba(249, 247, 244, 1) !important;
+}
+
+/* ---------- DESKTOP (≥901px): strzałki widoczne od razu, na zdjęciu ---------- */
+@media (min-width: 901px) {
+    body.collections-page .modal-gallery-prev,
+    body.collections-page .modal-gallery-next {
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: absolute !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        width: 44px !important;
+        height: 44px !important;
+        border-radius: 50% !important;
+        background: rgba(249, 247, 244, 0.92) !important;
+        border: 1px solid rgba(122, 104, 85, 0.25) !important;
+        color: var(--umbra) !important;
+        font-size: 1.3rem !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        z-index: 15 !important;
+        transition: background 0.25s ease, transform 0.25s ease;
+    }
+    body.collections-page .modal-gallery-prev { left: 1rem !important; }
+    body.collections-page .modal-gallery-next { right: 1rem !important; }
+    body.collections-page .modal-gallery-prev:hover {
+        background: rgba(249, 247, 244, 1) !important;
+        transform: translateY(-50%) translateX(-2px) !important;
+    }
+    body.collections-page .modal-gallery-next:hover {
+        background: rgba(249, 247, 244, 1) !important;
+        transform: translateY(-50%) translateX(2px) !important;
+    }
+    /* Miniatury zostają jako osobny, wyśrodkowany pasek pod zdjęciem */
+    body.collections-page .modal-gallery-controls {
+        justify-content: center !important;
+    }
+}
+
+/* ---------- TELEFON (≤900px): bez strzałek, nawigacja przez swipe; mniejszy modal ---------- */
+@media (max-width: 900px) {
+    body.collections-page .modal-gallery-prev,
+    body.collections-page .modal-gallery-next,
+    body.collections-page .modal-thumbnails {
+        display: none !important;
+    }
+
+    /* Modal nie zajmuje całego ekranu — widać tło wokół, łatwo go zamknąć stukając obok */
+    body.collections-page .modal-large.active {
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 5vh 4vw !important;
+    }
+    body.collections-page .modal-large-content {
+        width: 100% !important;
+        max-width: 440px !important;
+        height: auto !important;
+        max-height: 86vh !important;
+        border-radius: 18px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        margin: 0 auto !important;
+    }
+    body.collections-page .modal-large-inner {
+        display: block !important;
+    }
+    body.collections-page .modal-main-image-container {
+        width: 100% !important;
+        aspect-ratio: 1 !important;
+        height: auto !important;
+    }
+}
