@@ -3943,3 +3943,29 @@ body.collections-page .modal-close:hover {
         height: auto !important;
     }
 }
+
+/* ============================================
+   COLLECTIONS MODAL — SUWAK ZDJĘĆ (bez fade, fizyczne przesuwanie)
+   ============================================ */
+body.collections-page .modal-main-image-container {
+    overflow: hidden !important;
+}
+
+body.collections-page .modal-slide-track {
+    display: flex;
+    width: 300%;
+    height: 100%;
+    will-change: transform;
+}
+
+body.collections-page .modal-slide-track img {
+    width: 33.3333%;
+    height: 100%;
+    flex-shrink: 0;
+    object-fit: cover;
+    display: block;
+    -webkit-user-drag: none;
+    user-drag: none;
+    user-select: none;
+    pointer-events: none;
+}
