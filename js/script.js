@@ -67,7 +67,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie I / 8',
+            series: 'Uniesienie I / 6',
             description: 'Skrzydło motyla Morpho odbija światło inaczej niż cokolwiek innego — nie barwnikiem, lecz strukturą. Ten odcień beżu jest właśnie taki: widziany raz, zapamiętany inaczej. Jedwab przyjął go cicho, bez oporu.'
         },
         {
@@ -81,7 +81,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie I / 8',
+            series: 'Uniesienie I / 6',
             description: 'Marmur Calacatta rodzi się miliony lat — żyły biegną tam gdzie chcą, nie tam gdzie je posyłają. Woda powiedziała jedwabowi to samo. Wzór jest wynikiem rozmowy, nie decyzji.'
         },
         {
@@ -95,7 +95,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie I / 8',
+            series: 'Uniesienie I / 6',
             description: 'Meduza Aurelia aurita jest w dziewięćdziesięciu sześciu procentach wodą. Reszta — przezroczysta, drżąca, nieuchwytna. Dokładnie tyle potrzeba żeby istnieć.'
         },
         {
@@ -109,7 +109,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie I / 8',
+            series: 'Uniesienie I / 6',
             description: 'Minerał wanadinit tworzy kryształy heksagonalne — geometria która wybrała siebie sama. Pigment na jedwabiu nie zapytał o pozwolenie. Osiadł tam gdzie wiedział że powinien.'
         },
         {
@@ -123,7 +123,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie I / 8',
+            series: 'Uniesienie I / 6',
             description: 'Papilio blumei żyje w koronach drzew — widzi świat z góry, lekko. Kolor który zostawia na jedwabiu jest kolorem powietrza po deszczu. Złoty i spokojny jednocześnie.'
         },
         {
@@ -137,37 +137,9 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie I / 8',
+            series: 'Uniesienie I / 6',
             description: 'Lazuryt był pierwszym niebem zamkniętym w kamieniu — starożytni mielili go na błękit ultramarin. Ten jedwab pamięta tamten gest. Kolor który ktoś kiedyś wydobył z ziemi żeby oddać niebu.'
         },
-        {
-            name: 'Nero Marquina',
-            roman: 'VII',
-            soldOut: false,
-            serialNumber: '07',
-            color: 'Uniesienie I',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie I / 8',
-            description: 'Czarny marmur z Marąuiny ma białe żyły jak pęknięcia w nocy. Tutaj beż wchodzi w jedwab jako jasność — delikatna, niezdecydowana między dniem a zmrokiem.'
-        },
-        {
-            name: 'Pelagia noctiluca',
-            roman: 'VIII',
-            soldOut: false,
-            serialNumber: '08',
-            color: 'Uniesienie I',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie I / 8',
-            description: 'Pelagia noctiluca świeci własnym światłem w głębinie. Fosforescencja bez źródła, piękno bez wysiłku. Jedwab trzyma to samo napięcie — beż który świeci od środka.'
-        }
     ],
 
     // ── Uniesienie II — umbra, ziemia, głębia ─────────────────────────────
@@ -183,7 +155,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie II / 8',
+            series: 'Uniesienie II / 6',
             description: 'Umbracula marina — ślimak który nosi dom na plecach, wolny mimo to. Kolor umbry jest kolorem ziemi po deszczu, kiedy pachnie głębiej niż zwykle. Jedwab zapamiętał ten moment.'
         },
         {
@@ -197,7 +169,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie II / 8',
+            series: 'Uniesienie II / 6',
             description: 'Cynober był pierwszą czerwienią którą człowiek wydobył z ziemi i oddał obrazowi. Tutaj ta czerwień przyszła ciszej — jako brąz, jako ślad, jako wspomnienie intensywności.'
         },
         {
@@ -211,7 +183,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie II / 8',
+            series: 'Uniesienie II / 6',
             description: 'Złoty biegacz — chrząszcz który wygląda jak biżuteria porzucona w trawie. Jego pancerz łączy wszystkie odcienie brązu w jednym odbiciu. Ten jedwab robi to samo.'
         },
         {
@@ -225,7 +197,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie II / 8',
+            series: 'Uniesienie II / 6',
             description: 'Ziemia z Toskanii ma ten odcień — wypalona, ciepła, starożytna. Malarze suszyli ją i mielili. My zostawiliśmy ją płynną. Pigment sam wybrał jedwab jako dom.'
         },
         {
@@ -239,7 +211,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie II / 8',
+            series: 'Uniesienie II / 6',
             description: 'Modrzyk zwyczajny nosi barwy których nie powinno być razem — fiolet, błękit, czerwień. Na jedwabiu zostało tylko to co najcichsze: głęboki brąz z cieniem czegoś intensywnego.'
         },
         {
@@ -253,37 +225,9 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie II / 8',
+            series: 'Uniesienie II / 6',
             description: 'Skrzemionowane drewno — drzewo które zamieniło się w kamień i przeżyło milion lat. Słoje zostały, kolor stał się ciemniejszy. Ten jedwab pamięta coś czego my nie możemy.'
         },
-        {
-            name: 'Bronzite',
-            roman: 'VII',
-            soldOut: false,
-            serialNumber: '17',
-            color: 'Uniesienie II',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie II / 8',
-            description: 'Bronzyt połyskuje jak metal, a jest kamieniem. Granica między materią a pięknem jest tutaj umowna. Jedwab zapytał o to samo i nie znalazł odpowiedzi — zostało odbicie.'
-        },
-        {
-            name: 'Arachnocampa luminosa',
-            roman: 'VIII',
-            soldOut: false,
-            serialNumber: '18',
-            color: 'Uniesienie II',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie II / 8',
-            description: 'Larwy Arachnocampa świecą w nowozelandzkich grotach — niebo pod ziemią. Ten jedwab ma w sobie tę samą paradoksalną głębię: ciemny i jasny jednocześnie, jak grota pełna gwiazd.'
-        }
     ],
 
     // ── Uniesienie III — błękit pruski, głębiny, indygo ──────────────────
@@ -299,7 +243,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie III / 8',
+            series: 'Uniesienie III / 6',
             description: 'Indygowiec barwierski był handlowany jak złoto. Niebieskie szlaki kupieckie prowadziły przez kontynenty — wszystko dla tego odcienia. Jedwab przyjął go jak przyjmuje się coś na co się czekało.'
         },
         {
@@ -313,7 +257,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie III / 8',
+            series: 'Uniesienie III / 6',
             description: 'Bąbel portugalski unosi się na powierzchni oceanu — piękny i śmiertelny. Niebieskość którą nosi jest kolorem otwartego morza. Ten jedwab ma w sobie to samo drżenie.'
         },
         {
@@ -327,7 +271,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie III / 8',
+            series: 'Uniesienie III / 6',
             description: 'Starożytni płacili za lazuryt więcej niż za złoto. Vermeer zrujnował się kupując go dla swoich błękitów. Ten jedwab nie kosztuje tyle — ale nosi ten sam spokój absolutny.'
         },
         {
@@ -341,7 +285,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie III / 8',
+            series: 'Uniesienie III / 6',
             description: 'Apatyt jest twardością kości i szkliwa — minerał z którego zbudowane jest ciało. Kolor jego kryształów to błękit morski przed burzą. Jedwab zapytał wodę o to samo i dostał odpowiedź.'
         },
         {
@@ -355,7 +299,7 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie III / 8',
+            series: 'Uniesienie III / 6',
             description: 'Glaucus atlanticus pływa odwrócony — brzuchem do góry, błękitem skierowany w niebo jako kamuflaż. Nie wiadomo gdzie kończy się ocean a zaczyna ten ślimak. Jedwab ma to samo pytanie.'
         },
         {
@@ -369,153 +313,19 @@ const collections = {
             material: 'Jedwab',
             size: '68 × 68 cm',
             process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie III / 8',
+            series: 'Uniesienie III / 6',
             description: 'Kowellit — minerał miedziowy o odcieniu między niebieskim a fioletowym — zmienia kolor zależnie od kąta światła. Ten jedwab robi to samo: rano jest inny niż wieczorem.'
         },
-        {
-            name: 'Morpho menelaus',
-            roman: 'VII',
-            soldOut: false,
-            serialNumber: '27',
-            color: 'Uniesienie III',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie III / 8',
-            description: 'Morpho menelaus jest niebieskim niemożliwym — kolor który nie istnieje jako barwnik, tylko jako struktura skrzydła. Jedwab próbował go odtworzyć. Wyszło coś własnego — równie niemożliwego.'
-        },
-        {
-            name: 'Celestine',
-            roman: 'VIII',
-            soldOut: false,
-            serialNumber: '28',
-            color: 'Uniesienie III',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie III / 8',
-            description: 'Celestyn — niebiański — kryształ koloru zimowego nieba o świcie. Delikatny do złamania, piękny bez wysiłku. Pigment osiadł na jedwabiu z tą samą kruchą pewnością siebie.'
-        }
     ],
 
-    // ── Uniesienie IV — ecru, kość, biel złamana ─────────────────────────
+    // ── Uniesienie IV — zapowiedź kolejnej kolekcji, tylko data ───────────
     rust: [
-        {
-            name: 'Apis mellifera',
-            roman: 'I',
-            soldOut: false,
-            serialNumber: '31',
-            color: 'Uniesienie IV',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie IV / 8',
-            description: 'Pszczoła miodna produkuje wosk który jest ciepłym ecru — kolor powstały z tysiąca kwiatów przefiltrowanych przez czas. Ten jedwab ma tę samą słodką powagę.'
-        },
-        {
-            name: 'Calcite',
-            roman: 'II',
-            soldOut: false,
-            serialNumber: '32',
-            color: 'Uniesienie IV',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie IV / 8',
-            description: 'Kalcyt buduje muszle, rafy koralowe, jaskinie. Biel która ma w sobie historię morza — nie czysta, lecz pamiętająca. Jedwab przyjął ją jak przyjmuje się starą znajomość.'
-        },
-        {
-            name: 'Gonepteryx rhamni',
-            roman: 'III',
-            soldOut: false,
-            serialNumber: '33',
-            color: 'Uniesienie IV',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie IV / 8',
-            description: 'Latolistek cytrynek jest pierwszym motylem wiosny — żółtawy, blady, nieśmiały. Przylatuje zanim cokolwiek jest gotowe. Ten jedwab ma ten sam odcień niecierpliwości.'
-        },
-        {
-            name: 'Pearl nacre',
-            roman: 'IV',
-            soldOut: false,
-            serialNumber: '34',
-            color: 'Uniesienie IV',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie IV / 8',
-            description: 'Macica perłowa jest zbudowana z tych samych kryształów co kreda — ale ułożonych w warstwy tak precyzyjne że stają się tęczą. Ten jedwab zatrzymał ten moment tuż przed kolorem.'
-        },
-        {
-            name: 'Alabaster',
-            roman: 'V',
-            soldOut: false,
-            serialNumber: '35',
-            color: 'Uniesienie IV',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie IV / 8',
-            description: 'Alabaster jest tak miękki że można go porysować paznokciem — i tak piękny że rzeźbili w nim bogów. Biel która przepuszcza światło. Ten jedwab robi to samo przy oknie.'
-        },
-        {
-            name: 'Leucophaea maderae',
-            roman: 'VI',
-            soldOut: false,
-            serialNumber: '36',
-            color: 'Uniesienie IV',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie IV / 8',
-            description: 'Leucophaea to owad koloru starych listów — ecru z pamięcią. Żyje nocą, w ciszy, bez rozgłosu. Ten jedwab też nie krzyczy. Mówi tylko do tych którzy słuchają.'
-        },
-        {
-            name: 'Moonstone',
-            roman: 'VII',
-            soldOut: false,
-            serialNumber: '37',
-            color: 'Uniesienie IV',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie IV / 8',
-            description: 'Kamień księżycowy zmienia kolor zależnie od kąta — efekt zwany adularescencją, po górze Adula gdzie go znaleziono. Ten jedwab też nie jest tym samym o świcie i o zmroku.'
-        },
-        {
-            name: 'Vanilla planifolia',
-            roman: 'VIII',
-            soldOut: false,
-            serialNumber: '38',
-            color: 'Uniesienie IV',
-            priceOriginal: '799 PLN',
-            pricePrint: '799 PLN',
-            material: 'Jedwab',
-            size: '68 × 68 cm',
-            process: 'Ebru, pigmenty naturalne',
-            series: 'Uniesienie IV / 8',
-            description: 'Wanilia rośnie jako pnącze, kwitnie jeden dzień i musi być zapylona ręcznie. Tyle wysiłku dla zapachu który znamy jako oczywisty. Ten jedwab też jest pełen niewidzialnej pracy.'
-        }
+        { comingSoon: true, date: '12/09/26' },
+        { comingSoon: true, date: '12/09/26' },
+        { comingSoon: true, date: '12/09/26' },
+        { comingSoon: true, date: '12/09/26' },
+        { comingSoon: true, date: '12/09/26' },
+        { comingSoon: true, date: '12/09/26' }
     ]
 };
 
@@ -558,21 +368,22 @@ function renderCollection(colorKey) {
     // nie przez zmianę koloru — usunięto dynamiczne tło JS.
 
 grid.innerHTML = scarves.map((scarf, index) => {
-    const scarfSlug = scarf.name.toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/ł/g, 'l')
-        .replace(/ó/g, 'o')
-        .replace(/ą/g, 'a')
-        .replace(/ć/g, 'c')
-        .replace(/ź/g, 'z')
-        .replace(/ż/g, 'z')
-        .replace(/ę/g, 'e')
-        .replace(/ń/g, 'n')
-        .replace(/ś/g, 's');
-    
-    const imagePath = getImagePath(colorKey, scarf, 1);
     const bgColor = colorMap[colorKey];
-    
+
+    // Kafelek zapowiedzi (Uniesienie IV) — tylko data, bez zdjęcia i bez interakcji
+    if (scarf.comingSoon) {
+        return `
+            <div class="scarf-card-full scarf-coming-soon" data-scarf-index="${index}" data-color="${colorKey}" data-coming-soon="true">
+                <div class="scarf-image-full" style="background-color: ${bgColor};"></div>
+                <div class="scarf-info-overlay scarf-coming-soon-overlay">
+                    <div class="scarf-coming-soon-label"></div>
+                    <div class="scarf-coming-soon-date">${scarf.date}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    const imagePath = getImagePath(colorKey, scarf, 1);
     const isSoldOut = scarf.soldOut === true;
     return `
         <div class="scarf-card-full ${isSoldOut ? 'sold-out' : ''}" data-scarf-index="${index}" data-color="${colorKey}" data-sold="${isSoldOut}">
@@ -590,7 +401,7 @@ grid.innerHTML = scarves.map((scarf, index) => {
 
     document.querySelectorAll('.scarf-card-full').forEach(card => {
         card.addEventListener('click', function() {
-            if (this.dataset.sold === 'true') return;
+            if (this.dataset.sold === 'true' || this.dataset.comingSoon === 'true') return;
             const index = this.dataset.scarfIndex;
             const color = this.dataset.color;
             openScarfModal(color, index);
@@ -603,7 +414,7 @@ if (window.matchMedia('(hover: hover)').matches) {
             const color = c.dataset.color;
             const scarfIdx = c.dataset.scarfIndex;
             const scarf = collections[color][scarfIdx];
-            if (!scarf || c.dataset.sold === 'true') return;
+            if (!scarf || c.dataset.sold === 'true' || c.dataset.comingSoon === 'true') return;
 
             // Szukamy właściwego kontenera na obrazek
             const imgDiv = c.querySelector('.scarf-image-full');
@@ -748,8 +559,7 @@ function openScarfModal(colorKey, scarfIndex) {
     gallery.images = [
         getImagePath(colorKey, scarf, 1),
         getImagePath(colorKey, scarf, 2),
-        getImagePath(colorKey, scarf, 3),
-        getImagePath(colorKey, scarf, 4)
+        getImagePath(colorKey, scarf, 3)
     ];
     gallery.current = 0;
 
@@ -1209,7 +1019,7 @@ function updateAvailabilityCounter(colorKey) {
         <span class="counter-divider"> — </span>
         <span class="counter-label">Pozostało </span>
         <span class="counter-available">${available}</span>
-        <span class="counter-label"> z 8</span>
+        <span class="counter-label"> z ${collections[colorKey].length}</span>
     `;
     counter.style.opacity = '1';
 }
