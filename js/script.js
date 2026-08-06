@@ -376,7 +376,7 @@ grid.innerHTML = scarves.map((scarf, index) => {
             <div class="scarf-card-full scarf-coming-soon" data-scarf-index="${index}" data-color="${colorKey}" data-coming-soon="true">
                 <div class="scarf-image-full" style="background-color: ${bgColor};"></div>
                 <div class="scarf-info-overlay scarf-coming-soon-overlay">
-                    <div class="scarf-coming-soon-label"></div>
+                    <div class="scarf-coming-soon-label">Zapowiedź</div>
                     <div class="scarf-coming-soon-date">${scarf.date}</div>
                 </div>
             </div>
